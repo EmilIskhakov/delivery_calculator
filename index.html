@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма для расчета доставки</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Заполните форму для расчета стоимости доставки</h1>
+
+    <form id="deliveryForm">
+        <label for="category">Категория товара:</label>
+        <select id="category" name="category">
+            <option value="Обычные товары">Обычные товары</option>
+            <option value="Текстиль">Текстиль</option>
+            <option value="Одежда">Одежда</option>
+            <option value="Обувь">Обувь</option>
+            <option value="Нижнее белье">Нижнее белье</option>
+        </select>
+
+        <label for="weight">Вес товара (кг):</label>
+        <input type="number" id="weight" name="weight" required min="0.1" step="any">
+
+        <label for="length">Длина (см):</label>
+        <input type="number" id="length" name="length" required min="1" step="any">
+
+        <label for="width">Ширина (см):</label>
+        <input type="number" id="width" name="width" required min="1" step="any">
+
+        <label for="height">Высота (см):</label>
+        <input type="number" id="height" name="height" required min="1" step="any">
+
+        <input type="submit" value="Рассчитать стоимость">
+    </form>
+
+    <script>
+        document.getElementById('deliveryForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {
+                category: formData.get('category'),
+                weight: formData.get('weight'),
+                length: formData.get('length'),
+                width: formData.get('width'),
+                height: formData.get('height')
+            };
+
+            // Отправляем данные в бота через API или на сервер
+            fetch('https://your-domain.com/api/submit-form', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Форма отправлена успешно!');
+                // Дополнительные действия, если нужно
+            })
+            .catch(error => {
+                alert('Ошибка при отправке данных!');
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
