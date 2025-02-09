@@ -57,6 +57,7 @@
 </head>
 <body>
     <h1>Результат расчета доставки</h1>
+
     <!-- Общая информация -->
     <div class="section">
         <h2>Общая информация</h2>
@@ -69,6 +70,7 @@
         <p><strong>Страховка (%):</strong> <span id="insuranceRate">0</span></p>
         <p><strong>Страховка (сумма):</strong> $<span id="insuranceAmount">0</span></p>
     </div>
+
     <!-- Мешок -->
     <div class="section">
         <h2>Мешок</h2>
@@ -109,6 +111,7 @@
             </tbody>
         </table>
     </div>
+
     <!-- Картонные уголки -->
     <div class="section">
         <h2>Картонные уголки</h2>
@@ -149,6 +152,7 @@
             </tbody>
         </table>
     </div>
+
     <!-- Деревянный каркас -->
     <div class="section">
         <h2>Деревянный каркас</h2>
@@ -189,6 +193,7 @@
             </tbody>
         </table>
     </div>
+
     <!-- Кнопки действий -->
     <div class="button-container">
         <button class="button" onclick="goBack()">Вернуться на предыдущую страницу</button>
@@ -225,10 +230,10 @@
             // Общая информация
             document.getElementById('category').textContent = data.общаяИнформация?.категория || '-';
             document.getElementById('quantity').textContent = data.общаяИнформация?.количествоКоробок || 0;
-            document.getElementById('totalWeight').textContent = data.общаяИнформация?.вес || 0;
-            document.getElementById('totalVolume').textContent = data.общаяИнформация?.объем || 0;
-            document.getElementById('density').textContent = data.общаяИнформация?.плотность || 0;
-            document.getElementById('productCost').textContent = data.общаяИнформация?.стоимостьТовара || 0;
+            document.getElementById('totalWeight').textContent = parseFloat(data.общаяИнформация?.вес || 0).toFixed(2);
+            document.getElementById('totalVolume').textContent = parseFloat(data.общаяИнформация?.объем || 0).toFixed(2);
+            document.getElementById('density').textContent = parseFloat(data.общаяИнформация?.плотность || 0).toFixed(2);
+            document.getElementById('productCost').textContent = parseFloat(data.общаяИнформация?.стоимостьТовара || 0).toFixed(2);
             document.getElementById('insuranceRate').textContent = data.общаяИнформация?.страховкаПроцент || 0;
             document.getElementById('insuranceAmount').textContent = parseFloat(data.общаяИнформация?.страховкаСумма || 0).toFixed(2);
 
@@ -288,10 +293,10 @@
                 [
                     jsonData.общаяИнформация?.категория || '-',
                     jsonData.общаяИнформация?.количествоКоробок || 0,
-                    jsonData.общаяИнформация?.вес || 0,
-                    jsonData.общаяИнформация?.объем || 0,
-                    jsonData.общаяИнформация?.плотность || 0,
-                    jsonData.общаяИнформация?.стоимостьТовара || 0,
+                    parseFloat(jsonData.общаяИнформация?.вес || 0).toFixed(2),
+                    parseFloat(jsonData.общаяИнформация?.объем || 0).toFixed(2),
+                    parseFloat(jsonData.общаяИнформация?.плотность || 0).toFixed(2),
+                    parseFloat(jsonData.общаяИнформация?.стоимостьТовара || 0).toFixed(2),
                     jsonData.общаяИнформация?.страховкаПроцент || 0,
                     parseFloat(jsonData.общаяИнформация?.страховкаСумма || 0).toFixed(2)
                 ],
