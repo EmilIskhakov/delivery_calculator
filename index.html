@@ -112,57 +112,49 @@
 
     <script>
         // Функция для выполнения расчетов
-        function calculateCost(data) {
-            fetch(`https://script.google.com/macros/s/AKfycbyzu_Ob7qzjfvLTTyLnHI8DycMuf_c8qBNgg0ic-ohyTSfNNpKkFtP0SuB_DedzkCQtWQ/exec?category=${data.category}&weight=${data.weight}&length=${data.length}&width=${data.width}&height=${data.height}&cost=${data.cost}`)
-                .then(response => response.json())
-                .then(result => {
-                    if (!result) {
-                        alert("Ошибка при расчете!");
-                        return;
-                    }
-                    // Дополнительные расчеты
-                    const insurance = parseFloat(data.cost) * 0.01; // 1% от стоимости товара
-                    const results = {
-                        мешок: {
-                            packedWeight: parseFloat(result.packedWeight),
-                            packagingCost: parseFloat(result.packagingCost),
-                            unloadCost: parseFloat(result.unloadCost),
-                            fastAutoCost: parseFloat(result.fastAutoCost),
-                            regularAutoCost: parseFloat(result.regularAutoCost),
-                            insurance: insurance,
-                            totalFast: parseFloat(result.fastAutoCost) + parseFloat(result.packagingCost) + parseFloat(result.unloadCost) + insurance,
-                            totalRegular: parseFloat(result.regularAutoCost) + parseFloat(result.packagingCost) + parseFloat(result.unloadCost) + insurance
-                        },
-                        углы: {
-                            packedWeight: parseFloat(result.packedWeight) + 4, // Пример корректировки для углов
-                            packagingCost: 32,
-                            unloadCost: parseFloat(result.unloadCost),
-                            fastAutoCost: parseFloat(result.fastAutoCost) + 10, // Пример корректировки
-                            regularAutoCost: parseFloat(result.regularAutoCost) + 10,
-                            insurance: insurance,
-                            totalFast: parseFloat(result.fastAutoCost) + 32 + parseFloat(result.unloadCost) + insurance + 10,
-                            totalRegular: parseFloat(result.regularAutoCost) + 32 + parseFloat(result.unloadCost) + insurance + 10
-                        },
-                        каркас: {
-                            packedWeight: parseFloat(result.packedWeight) + 10, // Пример корректировки для каркаса
-                            packagingCost: 30,
-                            unloadCost: parseFloat(result.unloadCost),
-                            fastAutoCost: parseFloat(result.fastAutoCost) + 20,
-                            regularAutoCost: parseFloat(result.regularAutoCost) + 20,
-                            insurance: insurance,
-                            totalFast: parseFloat(result.fastAutoCost) + 30 + parseFloat(result.unloadCost) + insurance + 20,
-                            totalRegular: parseFloat(result.regularAutoCost) + 30 + parseFloat(result.unloadCost) + insurance + 20
-                        }
-                    };
-                    // Перенаправление на страницу с результатами
-                    const encodedResults = encodeURIComponent(JSON.stringify(results));
-                    window.location.href = "results.html?results=" + encodedResults;
-                })
-                .catch(error => {
-                    console.error('Ошибка при получении данных:', error);
-                    alert('Произошла ошибка при расчете!');
-                });
-        }
+// Функция для выполнения расчетов
+function calculateCost(data) {
+    fetch(`https://script.google.com/macros/s/AKfycbyzu_Ob7qzjfvLTTyLnHI8DycMuf_c8qBNgg0ic-ohyTSfNNpKkFtP0SuB_DedzkCQtWQ/exec?category=${encodeURIComponent(data.category)}&weight=${data.weight}&length=${data.length}&width=${data.width}&height=${data.height}&cost=${data.cost}`)
+        .then(response => response.json())
+        .then(result => {
+            if (result.error) {
+                alert(result.error); // Если есть ошибка, выводим её
+                return;
+            }
+
+            // Перенаправление на страницу с результатами
+            const encodedResults = encodeURIComponent(JSON.stringify(result));
+            window.location.href = "results.html?results=" + encodedResults;
+        })
+        .catch(error => {
+            console.error('Ошибка при получении данных:', error);
+            alert('Произошла ошибка при расчете!');
+        });
+}
+
+// Обработка отправки формы
+document.getElementById('deliveryForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    // Собираем данные из формы
+    const formData = new FormData(this);
+    const data = {
+        category: formData.get('category'),
+        weight: parseFloat(formData.get('weight')), // Вес одной коробки
+        length: parseFloat(formData.get('length')), // Длина
+        width: parseFloat(formData.get('width')), // Ширина
+        height: parseFloat(formData.get('height')), // Высота
+        cost: parseFloat(formData.get('cost')) // Стоимость товара
+    };
+
+    // Проверяем, что все данные указаны
+    if (!data.category || isNaN(data.weight) || isNaN(data.length) || isNaN(data.width) || isNaN(data.height) || isNaN(data.cost)) {
+        alert("Пожалуйста, заполните все поля!");
+        return;
+    }
+
+    // Выполняем расчеты
+    calculateCost(data);
+});
 
         // Обработка отправки формы
         document.getElementById('deliveryForm').addEventListener('submit', function(event) {
