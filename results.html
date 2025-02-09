@@ -40,7 +40,6 @@
 </head>
 <body>
     <h1>Результат расчета доставки</h1>
-
     <!-- Общая информация -->
     <div class="section">
         <h2>Общая введенная информация</h2>
@@ -48,7 +47,6 @@
         <p><strong>Плотность:</strong> <span id="density">0</span></p>
         <p><strong>Стоимость товара:</strong> $<span id="productCost">0</span></p>
     </div>
-
     <!-- Мешок -->
     <div class="section">
         <h2>Мешок</h2>
@@ -56,8 +54,8 @@
             <thead>
                 <tr>
                     <th>Параметр</th>
-                    <th>Быстрое</th>
-                    <th>Обычное</th>
+                    <th>Быстрое авто</th>
+                    <th>Обычное авто</th>
                 </tr>
             </thead>
             <tbody>
@@ -84,7 +82,6 @@
             </tbody>
         </table>
     </div>
-
     <!-- Картонные уголки -->
     <div class="section">
         <h2>Картонные уголки</h2>
@@ -120,7 +117,6 @@
             </tbody>
         </table>
     </div>
-
     <!-- Деревянный каркас -->
     <div class="section">
         <h2>Деревянный каркас</h2>
@@ -128,8 +124,8 @@
             <thead>
                 <tr>
                     <th>Параметр</th>
-                    <th>Быстрое</th>
-                    <th>Обычное</th>
+                    <th>Быстрое авто</th>
+                    <th>Обычное авто</th>
                 </tr>
             </thead>
             <tbody>
@@ -158,74 +154,75 @@
     </div>
 
     <script>
-<script>
-    // Функция для получения данных из URL
-    function getResultsFromUrl() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const resultsParam = urlParams.get('results');
-        if (!resultsParam) {
-            alert("Ошибка: данные не найдены!");
-            return null;
+        // Функция для получения данных из URL
+        function getResultsFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const resultsParam = urlParams.get('results');
+            if (!resultsParam) {
+                alert("Ошибка: данные не найдены!");
+                return null;
+            }
+            try {
+                const parsedData = JSON.parse(decodeURIComponent(resultsParam));
+                console.log("Полученные данные:", parsedData); // Выведите данные в консоль для проверки
+                return parsedData;
+            } catch (error) {
+                console.error('Ошибка при парсинге данных:', error);
+                alert("Произошла ошибка при обработке результатов!");
+                return null;
+            }
         }
-        try {
-            return JSON.parse(decodeURIComponent(resultsParam));
-        } catch (error) {
-            console.error('Ошибка при парсинге данных:', error);
-            alert("Произошла ошибка при обработке результатов!");
-            return null;
+
+        // Функция для заполнения данных
+        function fillData(data) {
+            if (!data || typeof data !== 'object') {
+                alert("Ошибка: некорректные данные!");
+                return;
+            }
+
+            // Общая информация
+            document.getElementById('weight').textContent = data.общаяИнформация?.вес || 0;
+            document.getElementById('density').textContent = data.общаяИнформация?.плотность || 0;
+            document.getElementById('productCost').textContent = data.общаяИнформация?.стоимостьТовара || 0;
+
+            // Мешок
+            document.getElementById('bagWeightFast').textContent = data.мешок?.packedWeight || 0;
+            document.getElementById('bagWeightRegular').textContent = data.мешок?.packedWeight || 0;
+            document.getElementById('bagPackagingFast').textContent = data.мешок?.packagingCost || 0;
+            document.getElementById('bagPackagingRegular').textContent = data.мешок?.packagingCost || 0;
+            document.getElementById('bagUnloadFast').textContent = data.мешок?.unloadCost || 0;
+            document.getElementById('bagUnloadRegular').textContent = data.мешок?.unloadCost || 0;
+            document.getElementById('bagTotalFast').textContent = `$${parseFloat(data.мешок?.totalFast || 0).toFixed(2)}`;
+            document.getElementById('bagTotalRegular').textContent = `$${parseFloat(data.мешок?.totalRegular || 0).toFixed(2)}`;
+
+            // Картонные уголки
+            document.getElementById('cornersWeightFast').textContent = data.углы?.packedWeight || 0;
+            document.getElementById('cornersWeightRegular').textContent = data.углы?.packedWeight || 0;
+            document.getElementById('cornersPackagingFast').textContent = data.углы?.packagingCost || 0;
+            document.getElementById('cornersPackagingRegular').textContent = data.углы?.packagingCost || 0;
+            document.getElementById('cornersUnloadFast').textContent = data.углы?.unloadCost || 0;
+            document.getElementById('cornersUnloadRegular').textContent = data.углы?.unloadCost || 0;
+            document.getElementById('cornersTotalFast').textContent = `$${parseFloat(data.углы?.totalFast || 0).toFixed(2)}`;
+            document.getElementById('cornersTotalRegular').textContent = `$${parseFloat(data.углы?.totalRegular || 0).toFixed(2)}`;
+
+            // Деревянный каркас
+            document.getElementById('frameWeightFast').textContent = data.каркас?.packedWeight || 0;
+            document.getElementById('frameWeightRegular').textContent = data.каркас?.packedWeight || 0;
+            document.getElementById('framePackagingFast').textContent = data.каркас?.packagingCost || 0;
+            document.getElementById('framePackagingRegular').textContent = data.каркас?.packagingCost || 0;
+            document.getElementById('frameUnloadFast').textContent = data.каркас?.unloadCost || 0;
+            document.getElementById('frameUnloadRegular').textContent = data.каркас?.unloadCost || 0;
+            document.getElementById('frameTotalFast').textContent = `$${parseFloat(data.каркас?.totalFast || 0).toFixed(2)}`;
+            document.getElementById('frameTotalRegular').textContent = `$${parseFloat(data.каркас?.totalRegular || 0).toFixed(2)}`;
         }
-    }
 
-    // Получаем данные из URL
-    const jsonData = getResultsFromUrl();
-    if (!jsonData) {
-        // Если данные не получены, прекращаем выполнение
-        document.body.innerHTML = "<h1>Ошибка: данные не найдены</h1>";
-        throw new Error("Данные не найдены");
-    }
-
-    // Функция для заполнения данных
-    function fillData(data) {
-        // Общая информация
-        document.getElementById('weight').textContent = data.общаяИнформация.вес;
-        document.getElementById('density').textContent = data.общаяИнформация.плотность;
-        document.getElementById('productCost').textContent = data.общаяИнформация.стоимостьТовара;
-
-        // Мешок
-        document.getElementById('bagWeightFast').textContent = data.мешок.packedWeight;
-        document.getElementById('bagWeightRegular').textContent = data.мешок.packedWeight;
-        document.getElementById('bagPackagingFast').textContent = data.мешок.packagingCost;
-        document.getElementById('bagPackagingRegular').textContent = data.мешок.packagingCost;
-        document.getElementById('bagUnloadFast').textContent = data.мешок.unloadCost;
-        document.getElementById('bagUnloadRegular').textContent = data.мешок.unloadCost;
-        document.getElementById('bagTotalFast').textContent = `$${data.мешок.totalFast.toFixed(2)}`;
-        document.getElementById('bagTotalRegular').textContent = `$${data.мешок.totalRegular.toFixed(2)}`;
-
-        // Картонные уголки
-        document.getElementById('cornersWeightFast').textContent = data.углы.packedWeight;
-        document.getElementById('cornersWeightRegular').textContent = data.углы.packedWeight;
-        document.getElementById('cornersPackagingFast').textContent = data.углы.packagingCost;
-        document.getElementById('cornersPackagingRegular').textContent = data.углы.packagingCost;
-        document.getElementById('cornersUnloadFast').textContent = data.углы.unloadCost;
-        document.getElementById('cornersUnloadRegular').textContent = data.углы.unloadCost;
-        document.getElementById('cornersTotalFast').textContent = `$${data.углы.totalFast.toFixed(2)}`;
-        document.getElementById('cornersTotalRegular').textContent = `$${data.углы.totalRegular.toFixed(2)}`;
-
-        // Деревянный каркас
-        document.getElementById('frameWeightFast').textContent = data.каркас.packedWeight;
-        document.getElementById('frameWeightRegular').textContent = data.каркас.packedWeight;
-        document.getElementById('framePackagingFast').textContent = data.каркас.packagingCost;
-        document.getElementById('framePackagingRegular').textContent = data.каркас.packagingCost;
-        document.getElementById('frameUnloadFast').textContent = data.каркас.unloadCost;
-        document.getElementById('frameUnloadRegular').textContent = data.каркас.unloadCost;
-        document.getElementById('frameTotalFast').textContent = `$${data.каркас.totalFast.toFixed(2)}`;
-        document.getElementById('frameTotalRegular').textContent = `$${data.каркас.totalRegular.toFixed(2)}`;
-    }
-
-    // Заполняем данные при загрузке страницы
-    if (jsonData) {
-        fillData(jsonData);
-    }
-</script>
+        // Получаем и заполняем данные
+        const jsonData = getResultsFromUrl();
+        if (jsonData) {
+            fillData(jsonData);
+        } else {
+            document.body.innerHTML = "<h1>Ошибка: данные не найдены</h1>";
+        }
+    </script>
 </body>
 </html>
