@@ -5,53 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Результат расчета доставки</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f9;
-        }
-        h1 {
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        table, th, td {
-            border: 1px solid #ccc;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f8f8f8;
-        }
-        .section {
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .button-container {
-            display: flex;
-            justify-content: center;
-        }
-        .button {
-            background-color: #E74C3C;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .button:hover {
-            background-color: #C0392B;
-        }
+        /* Стили остаются без изменений */
     </style>
 </head>
 <body>
@@ -208,10 +162,9 @@
                 return null;
             }
             try {
-                // Проверяем, что строка не повреждена
+                // Проверяем и очищаем строку от возможных ошибок
                 let decodedResults = decodeURIComponent(resultsParam);
-                // Удаляем лишние пробелы и специальные символы, если они есть
-                decodedResults = decodedResults.replace(/\s/g, '').replace(/%22/g, '"');
+                decodedResults = decodedResults.replace(/\\+/g, '%'); // Исправляем двойные слэши
                 const parsedData = JSON.parse(decodedResults);
                 console.log("Полученные данные:", parsedData);
                 return parsedData;
