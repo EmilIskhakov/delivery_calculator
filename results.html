@@ -1,155 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculation Results</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      padding: 10px;
-      background-color: #f4f4f4;
-    }
-    .result-container {
-      background-color: white;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      color: #333;
-    }
-    p {
-      font-size: 16px;
-    }
-    .result-container p {
-      margin-bottom: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculation Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 10px;
+            background-color: #f4f4f4;
+        }
+        .result-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            font-size: 16px;
+        }
+        .result-container p {
+            margin-bottom: 10px;
+        }
+        .back-button {
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #E74C3C;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
+    <div class="result-container">
+        <h1>Calculation Results</h1>
 
-  <div class="result-container">
-    <h1>Calculation Results</h1>
-    
-    <!-- General Information -->
-    <div>
-      <h3>General Information</h3>
-      <p><strong>Category:</strong> <span id="resultCategory"></span></p>
-      <p><strong>Total Weight (kg):</strong> <span id="resultWeight"></span></p>
-      <p><strong>Density:</strong> <span id="resultDensity"></span></p>
-      <p><strong>Product Cost:</strong> <span id="resultProductCost"></span></p>
-      <p><strong>Insurance Rate:</strong> <span id="resultInsuranceRate"></span></p>
-      <p><strong>Insurance Amount:</strong> <span id="resultInsuranceAmount"></span></p>
-      <p><strong>Total Volume (m³):</strong> <span id="resultVolume"></span></p>
-      <p><strong>Box Count:</strong> <span id="resultBoxCount"></span></p>
+        <!-- General Information -->
+        <div>
+            <h3>General Information</h3>
+            <p><strong>Category:</strong> <span id="resultCategory"></span></p>
+            <p><strong>Total Weight (kg):</strong> <span id="resultWeight"></span></p>
+            <p><strong>Density:</strong> <span id="resultDensity"></span></p>
+            <p><strong>Product Cost:</strong> <span id="resultProductCost"></span></p>
+            <p><strong>Insurance Rate:</strong> <span id="resultInsuranceRate"></span></p>
+            <p><strong>Insurance Amount:</strong> <span id="resultInsuranceAmount"></span></p>
+            <p><strong>Total Volume (m³):</strong> <span id="resultVolume"></span></p>
+            <p><strong>Box Count:</strong> <span id="resultBoxCount"></span></p>
+        </div>
+        <hr>
+        <!-- Bag Details -->
+        <div>
+            <h3>Bag Packaging</h3>
+            <p><strong>Packed Weight (kg):</strong> <span id="resultBagPackedWeight"></span></p>
+            <p><strong>Packaging Cost:</strong> <span id="resultBagPackagingCost"></span></p>
+            <p><strong>Unload Cost:</strong> <span id="resultBagUnloadCost"></span></p>
+            <p><strong>Insurance:</strong> <span id="resultBagInsurance"></span></p>
+            <p><strong>Total (Fast Shipping):</strong> <span id="resultBagTotalFast"></span></p>
+            <p><strong>Total (Regular Shipping):</strong> <span id="resultBagTotalRegular"></span></p>
+        </div>
+        <hr>
+        <!-- Corners Details -->
+        <div>
+            <h3>Corners Packaging</h3>
+            <p><strong>Packed Weight (kg):</strong> <span id="resultCornersPackedWeight"></span></p>
+            <p><strong>Packaging Cost:</strong> <span id="resultCornersPackagingCost"></span></p>
+            <p><strong>Unload Cost:</strong> <span id="resultCornersUnloadCost"></span></p>
+            <p><strong>Insurance:</strong> <span id="resultCornersInsurance"></span></p>
+            <p><strong>Total (Fast Shipping):</strong> <span id="resultCornersTotalFast"></span></p>
+            <p><strong>Total (Regular Shipping):</strong> <span id="resultCornersTotalRegular"></span></p>
+        </div>
+        <hr>
+        <!-- Frame Details -->
+        <div>
+            <h3>Frame Packaging</h3>
+            <p><strong>Packed Weight (kg):</strong> <span id="resultFramePackedWeight"></span></p>
+            <p><strong>Packaging Cost:</strong> <span id="resultFramePackagingCost"></span></p>
+            <p><strong>Unload Cost:</strong> <span id="resultFrameUnloadCost"></span></p>
+            <p><strong>Insurance:</strong> <span id="resultFrameInsurance"></span></p>
+            <p><strong>Total (Fast Shipping):</strong> <span id="resultFrameTotalFast"></span></p>
+            <p><strong>Total (Regular Shipping):</strong> <span id="resultFrameTotalRegular"></span></p>
+        </div>
     </div>
+    <a href="index.html" class="back-button">← Вернуться к расчету</a>
+    <script>
+        function fetchResults() {
+            // Получаем данные из URL-параметра
+            const urlParams = new URLSearchParams(window.location.search);
+            const resultsParam = urlParams.get('results');
 
-    <hr>
+            if (!resultsParam) {
+                alert("Результаты не найдены.");
+                return;
+            }
 
-    <!-- Bag Details -->
-    <div>
-      <h3>Bag Packaging</h3>
-      <p><strong>Packed Weight (kg):</strong> <span id="resultBagPackedWeight"></span></p>
-      <p><strong>Packaging Cost:</strong> <span id="resultBagPackagingCost"></span></p>
-      <p><strong>Unload Cost:</strong> <span id="resultBagUnloadCost"></span></p>
-      <p><strong>Insurance:</strong> <span id="resultBagInsurance"></span></p>
-      <p><strong>Total (Fast Shipping):</strong> <span id="resultBagTotalFast"></span></p>
-      <p><strong>Total (Regular Shipping):</strong> <span id="resultBagTotalRegular"></span></p>
-    </div>
+            try {
+                // Расшифровываем JSON-строку
+                const data = JSON.parse(decodeURIComponent(resultsParam));
 
-    <hr>
+                // Отображаем данные
+                document.getElementById('resultCategory').textContent = data.generalInformation.category;
+                document.getElementById('resultWeight').textContent = data.generalInformation.weight;
+                document.getElementById('resultDensity').textContent = data.generalInformation.density;
+                document.getElementById('resultProductCost').textContent = data.generalInformation.productCost;
+                document.getElementById('resultInsuranceRate').textContent = data.generalInformation.insuranceRate;
+                document.getElementById('resultInsuranceAmount').textContent = data.generalInformation.insuranceAmount;
+                document.getElementById('resultVolume').textContent = data.generalInformation.volume;
+                document.getElementById('resultBoxCount').textContent = data.generalInformation.boxCount;
 
-    <!-- Corners Details -->
-    <div>
-      <h3>Corners Packaging</h3>
-      <p><strong>Packed Weight (kg):</strong> <span id="resultCornersPackedWeight"></span></p>
-      <p><strong>Packaging Cost:</strong> <span id="resultCornersPackagingCost"></span></p>
-      <p><strong>Unload Cost:</strong> <span id="resultCornersUnloadCost"></span></p>
-      <p><strong>Insurance:</strong> <span id="resultCornersInsurance"></span></p>
-      <p><strong>Total (Fast Shipping):</strong> <span id="resultCornersTotalFast"></span></p>
-      <p><strong>Total (Regular Shipping):</strong> <span id="resultCornersTotalRegular"></span></p>
-    </div>
+                // Bag results
+                document.getElementById('resultBagPackedWeight').textContent = data.bag.packedWeight;
+                document.getElementById('resultBagPackagingCost').textContent = data.bag.packagingCost;
+                document.getElementById('resultBagUnloadCost').textContent = data.bag.unloadCost;
+                document.getElementById('resultBagInsurance').textContent = data.bag.insurance;
+                document.getElementById('resultBagTotalFast').textContent = data.bag.totalFast;
+                document.getElementById('resultBagTotalRegular').textContent = data.bag.totalRegular;
 
-    <hr>
+                // Corners results
+                document.getElementById('resultCornersPackedWeight').textContent = data.corners.packedWeight;
+                document.getElementById('resultCornersPackagingCost').textContent = data.corners.packagingCost;
+                document.getElementById('resultCornersUnloadCost').textContent = data.corners.unloadCost;
+                document.getElementById('resultCornersInsurance').textContent = data.corners.insurance;
+                document.getElementById('resultCornersTotalFast').textContent = data.corners.totalFast;
+                document.getElementById('resultCornersTotalRegular').textContent = data.corners.totalRegular;
 
-    <!-- Frame Details -->
-    <div>
-      <h3>Frame Packaging</h3>
-      <p><strong>Packed Weight (kg):</strong> <span id="resultFramePackedWeight"></span></p>
-      <p><strong>Packaging Cost:</strong> <span id="resultFramePackagingCost"></span></p>
-      <p><strong>Unload Cost:</strong> <span id="resultFrameUnloadCost"></span></p>
-      <p><strong>Insurance:</strong> <span id="resultFrameInsurance"></span></p>
-      <p><strong>Total (Fast Shipping):</strong> <span id="resultFrameTotalFast"></span></p>
-      <p><strong>Total (Regular Shipping):</strong> <span id="resultFrameTotalRegular"></span></p>
-    </div>
-  </div>
+                // Frame results
+                document.getElementById('resultFramePackedWeight').textContent = data.frame.packedWeight;
+                document.getElementById('resultFramePackagingCost').textContent = data.frame.packagingCost;
+                document.getElementById('resultFrameUnloadCost').textContent = data.frame.unloadCost;
+                document.getElementById('resultFrameInsurance').textContent = data.frame.insurance;
+                document.getElementById('resultFrameTotalFast').textContent = data.frame.totalFast;
+                document.getElementById('resultFrameTotalRegular').textContent = data.frame.totalRegular;
+            } catch (error) {
+                alert("Ошибка при обработке результатов: " + error.message);
+            }
+        }
 
-  <script>
-    // Функция для получения данных из URL и отображения результатов
-    function fetchResults() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const category = urlParams.get('category');
-      const weight = parseFloat(urlParams.get('weight'));
-      const length = parseFloat(urlParams.get('length'));
-      const width = parseFloat(urlParams.get('width'));
-      const height = parseFloat(urlParams.get('height'));
-      const cost = parseFloat(urlParams.get('cost'));
-      const quantity = parseInt(urlParams.get('quantity'));
-
-      // Строим URL для запроса на сервер
-      const apiUrl = `your_endpoint_url?category=${category}&weight=${weight}&length=${length}&width=${width}&height=${height}&cost=${cost}&quantity=${quantity}`;
-
-      // Запрос к серверу
-      fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-          if (data.error) {
-            alert('Error: ' + data.error);
-          } else {
-            // Отображаем данные
-            document.getElementById('resultCategory').textContent = data.generalInformation.category;
-            document.getElementById('resultWeight').textContent = data.generalInformation.weight;
-            document.getElementById('resultDensity').textContent = data.generalInformation.density;
-            document.getElementById('resultProductCost').textContent = data.generalInformation.productCost;
-            document.getElementById('resultInsuranceRate').textContent = data.generalInformation.insuranceRate;
-            document.getElementById('resultInsuranceAmount').textContent = data.generalInformation.insuranceAmount;
-            document.getElementById('resultVolume').textContent = data.generalInformation.volume;
-            document.getElementById('resultBoxCount').textContent = data.generalInformation.boxCount;
-
-            // Bag results
-            document.getElementById('resultBagPackedWeight').textContent = data.bag.packedWeight;
-            document.getElementById('resultBagPackagingCost').textContent = data.bag.packagingCost;
-            document.getElementById('resultBagUnloadCost').textContent = data.bag.unloadCost;
-            document.getElementById('resultBagInsurance').textContent = data.bag.insurance;
-            document.getElementById('resultBagTotalFast').textContent = data.bag.totalFast;
-            document.getElementById('resultBagTotalRegular').textContent = data.bag.totalRegular;
-
-            // Corners results
-            document.getElementById('resultCornersPackedWeight').textContent = data.corners.packedWeight;
-            document.getElementById('resultCornersPackagingCost').textContent = data.corners.packagingCost;
-            document.getElementById('resultCornersUnloadCost').textContent = data.corners.unloadCost;
-            document.getElementById('resultCornersInsurance').textContent = data.corners.insurance;
-            document.getElementById('resultCornersTotalFast').textContent = data.corners.totalFast;
-            document.getElementById('resultCornersTotalRegular').textContent = data.corners.totalRegular;
-
-            // Frame results
-            document.getElementById('resultFramePackedWeight').textContent = data.frame.packedWeight;
-            document.getElementById('resultFramePackagingCost').textContent = data.frame.packagingCost;
-            document.getElementById('resultFrameUnloadCost').textContent = data.frame.unloadCost;
-            document.getElementById('resultFrameInsurance').textContent = data.frame.insurance;
-            document.getElementById('resultFrameTotalFast').textContent = data.frame.totalFast;
-            document.getElementById('resultFrameTotalRegular').textContent = data.frame.totalRegular;
-          }
-        })
-        .catch(error => {
-          alert('Error fetching data: ' + error);
-        });
-    }
-
-    // Запуск функции при загрузке страницы
-    window.onload = fetchResults;
-  </script>
+        // Запуск функции при загрузке страницы
+        window.onload = fetchResults;
+    </script>
 </body>
 </html>
