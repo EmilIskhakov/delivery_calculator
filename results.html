@@ -208,12 +208,16 @@
                 return null;
             }
             try {
-                const parsedData = JSON.parse(decodeURIComponent(resultsParam));
+                // Проверяем, что строка не повреждена
+                let decodedResults = decodeURIComponent(resultsParam);
+                // Удаляем лишние пробелы и специальные символы, если они есть
+                decodedResults = decodedResults.replace(/\s/g, '').replace(/%22/g, '"');
+                const parsedData = JSON.parse(decodedResults);
                 console.log("Полученные данные:", parsedData);
                 return parsedData;
             } catch (error) {
                 console.error('Ошибка при парсинге данных:', error);
-                alert("Произошла ошибка при обработке результатов!");
+                alert("Произошла ошибка при обработке результатов! Возможно, данные повреждены.");
                 return null;
             }
         }
@@ -282,7 +286,7 @@
         if (jsonData) {
             fillData(jsonData);
         } else {
-            document.body.innerHTML = "<h1>Ошибка: данные не найдены</h1>";
+            document.body.innerHTML = "<h1>Ошибка: данные не найдены или повреждены</h1>";
         }
     </script>
 </body>
