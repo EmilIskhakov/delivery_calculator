@@ -5,25 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Результат расчета доставки</title>
     <style>
-        /* Стили остаются без изменений */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f8f8;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
     <h1>Результат расчета доставки</h1>
-
     <!-- Общая информация -->
     <div class="section">
-        <h2>Общая информация</h2>
-        <p><strong>Категория:</strong> <span id="category">-</span></p>
-        <p><strong>Количество коробок:</strong> <span id="quantity">0</span></p>
-        <p><strong>Общий вес:</strong> <span id="totalWeight">0</span> кг</p>
-        <p><strong>Общий объем:</strong> <span id="totalVolume">0</span> м³</p>
-        <p><strong>Плотность:</strong> <span id="density">0</span> кг/м³</p>
+        <h2>Общая введенная информация</h2>
+        <p><strong>Вес товара:</strong> <span id="weight">0</span> кг</p>
+        <p><strong>Плотность:</strong> <span id="density">0</span></p>
         <p><strong>Стоимость товара:</strong> $<span id="productCost">0</span></p>
-        <p><strong>Страховка (%):</strong> <span id="insuranceRate">0</span></p>
-        <p><strong>Страховка (сумма):</strong> $<span id="insuranceAmount">0</span></p>
     </div>
-
     <!-- Мешок -->
     <div class="section">
         <h2>Мешок</h2>
@@ -42,19 +65,14 @@
                     <td id="bagWeightRegular">0</td>
                 </tr>
                 <tr>
-                    <td>Стоимость упаковки</td>
-                    <td id="bagPackagingFast">$0.00</td>
-                    <td id="bagPackagingRegular">$0.00</td>
+                    <td>Упаковка</td>
+                    <td id="bagPackagingFast">0</td>
+                    <td id="bagPackagingRegular">0</td>
                 </tr>
                 <tr>
-                    <td>Стоимость разгрузки</td>
-                    <td id="bagUnloadFast">$0.00</td>
-                    <td id="bagUnloadRegular">$0.00</td>
-                </tr>
-                <tr>
-                    <td>Страховка</td>
-                    <td id="bagInsuranceFast">$0.00</td>
-                    <td id="bagInsuranceRegular">$0.00</td>
+                    <td>Разгрузочные работы</td>
+                    <td id="bagUnloadFast">0</td>
+                    <td id="bagUnloadRegular">0</td>
                 </tr>
                 <tr>
                     <td><strong>Итого</strong></td>
@@ -64,7 +82,6 @@
             </tbody>
         </table>
     </div>
-
     <!-- Картонные уголки -->
     <div class="section">
         <h2>Картонные уголки</h2>
@@ -83,19 +100,14 @@
                     <td id="cornersWeightRegular">0</td>
                 </tr>
                 <tr>
-                    <td>Стоимость упаковки</td>
-                    <td id="cornersPackagingFast">$0.00</td>
-                    <td id="cornersPackagingRegular">$0.00</td>
+                    <td>Упаковка</td>
+                    <td id="cornersPackagingFast">0</td>
+                    <td id="cornersPackagingRegular">0</td>
                 </tr>
                 <tr>
-                    <td>Стоимость разгрузки</td>
-                    <td id="cornersUnloadFast">$0.00</td>
-                    <td id="cornersUnloadRegular">$0.00</td>
-                </tr>
-                <tr>
-                    <td>Страховка</td>
-                    <td id="cornersInsuranceFast">$0.00</td>
-                    <td id="cornersInsuranceRegular">$0.00</td>
+                    <td>Разгрузочные работы</td>
+                    <td id="cornersUnloadFast">0</td>
+                    <td id="cornersUnloadRegular">0</td>
                 </tr>
                 <tr>
                     <td><strong>Итого</strong></td>
@@ -105,7 +117,6 @@
             </tbody>
         </table>
     </div>
-
     <!-- Деревянный каркас -->
     <div class="section">
         <h2>Деревянный каркас</h2>
@@ -124,19 +135,14 @@
                     <td id="frameWeightRegular">0</td>
                 </tr>
                 <tr>
-                    <td>Стоимость упаковки</td>
-                    <td id="framePackagingFast">$0.00</td>
-                    <td id="framePackagingRegular">$0.00</td>
+                    <td>Упаковка</td>
+                    <td id="framePackagingFast">0</td>
+                    <td id="framePackagingRegular">0</td>
                 </tr>
                 <tr>
-                    <td>Стоимость разгрузки</td>
-                    <td id="frameUnloadFast">$0.00</td>
-                    <td id="frameUnloadRegular">$0.00</td>
-                </tr>
-                <tr>
-                    <td>Страховка</td>
-                    <td id="frameInsuranceFast">$0.00</td>
-                    <td id="frameInsuranceRegular">$0.00</td>
+                    <td>Разгрузочные работы</td>
+                    <td id="frameUnloadFast">0</td>
+                    <td id="frameUnloadRegular">0</td>
                 </tr>
                 <tr>
                     <td><strong>Итого</strong></td>
@@ -145,11 +151,6 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-
-    <!-- Кнопка возврата -->
-    <div class="button-container">
-        <button class="button" onclick="goBack()">Вернуться на предыдущую страницу</button>
     </div>
 
     <script>
@@ -162,15 +163,12 @@
                 return null;
             }
             try {
-                // Проверяем и очищаем строку от возможных ошибок
-                let decodedResults = decodeURIComponent(resultsParam);
-                decodedResults = decodedResults.replace(/\\+/g, '%'); // Исправляем двойные слэши
-                const parsedData = JSON.parse(decodedResults);
-                console.log("Полученные данные:", parsedData);
+                const parsedData = JSON.parse(decodeURIComponent(resultsParam));
+                console.log("Полученные данные:", parsedData); // Выведите данные в консоль для проверки
                 return parsedData;
             } catch (error) {
                 console.error('Ошибка при парсинге данных:', error);
-                alert("Произошла ошибка при обработке результатов! Возможно, данные повреждены.");
+                alert("Произошла ошибка при обработке результатов!");
                 return null;
             }
         }
@@ -183,55 +181,39 @@
             }
 
             // Общая информация
-            document.getElementById('category').textContent = data.общаяИнформация?.категория || '-';
-            document.getElementById('quantity').textContent = data.общаяИнформация?.количествоКоробок || 0;
-            document.getElementById('totalWeight').textContent = parseFloat(data.общаяИнформация?.вес || 0).toFixed(2);
-            document.getElementById('totalVolume').textContent = parseFloat(data.общаяИнформация?.объем || 0).toFixed(2);
-            document.getElementById('density').textContent = parseFloat(data.общаяИнформация?.плотность || 0).toFixed(2);
-            document.getElementById('productCost').textContent = parseFloat(data.общаяИнформация?.стоимостьТовара || 0).toFixed(2);
-            document.getElementById('insuranceRate').textContent = data.общаяИнформация?.страховкаПроцент || 0;
-            document.getElementById('insuranceAmount').textContent = parseFloat(data.общаяИнформация?.страховкаСумма || 0).toFixed(2);
+            document.getElementById('weight').textContent = data.общаяИнформация?.вес || 0;
+            document.getElementById('density').textContent = data.общаяИнформация?.плотность || 0;
+            document.getElementById('productCost').textContent = data.общаяИнформация?.стоимостьТовара || 0;
 
             // Мешок
-            document.getElementById('bagWeightFast').textContent = parseFloat(data.мешок?.packedWeight || 0).toFixed(2);
-            document.getElementById('bagWeightRegular').textContent = parseFloat(data.мешок?.packedWeight || 0).toFixed(2);
-            document.getElementById('bagPackagingFast').textContent = `$${parseFloat(data.мешок?.packagingCost || 0).toFixed(2)}`;
-            document.getElementById('bagPackagingRegular').textContent = `$${parseFloat(data.мешок?.packagingCost || 0).toFixed(2)}`;
-            document.getElementById('bagUnloadFast').textContent = `$${parseFloat(data.мешок?.unloadCost || 0).toFixed(2)}`;
-            document.getElementById('bagUnloadRegular').textContent = `$${parseFloat(data.мешок?.unloadCost || 0).toFixed(2)}`;
-            document.getElementById('bagInsuranceFast').textContent = `$${parseFloat(data.мешок?.insurance || 0).toFixed(2)}`;
-            document.getElementById('bagInsuranceRegular').textContent = `$${parseFloat(data.мешок?.insurance || 0).toFixed(2)}`;
+            document.getElementById('bagWeightFast').textContent = data.мешок?.packedWeight || 0;
+            document.getElementById('bagWeightRegular').textContent = data.мешок?.packedWeight || 0;
+            document.getElementById('bagPackagingFast').textContent = data.мешок?.packagingCost || 0;
+            document.getElementById('bagPackagingRegular').textContent = data.мешок?.packagingCost || 0;
+            document.getElementById('bagUnloadFast').textContent = data.мешок?.unloadCost || 0;
+            document.getElementById('bagUnloadRegular').textContent = data.мешок?.unloadCost || 0;
             document.getElementById('bagTotalFast').textContent = `$${parseFloat(data.мешок?.totalFast || 0).toFixed(2)}`;
             document.getElementById('bagTotalRegular').textContent = `$${parseFloat(data.мешок?.totalRegular || 0).toFixed(2)}`;
 
             // Картонные уголки
-            document.getElementById('cornersWeightFast').textContent = parseFloat(data.углы?.packedWeight || 0).toFixed(2);
-            document.getElementById('cornersWeightRegular').textContent = parseFloat(data.углы?.packedWeight || 0).toFixed(2);
-            document.getElementById('cornersPackagingFast').textContent = `$${parseFloat(data.углы?.packagingCost || 0).toFixed(2)}`;
-            document.getElementById('cornersPackagingRegular').textContent = `$${parseFloat(data.углы?.packagingCost || 0).toFixed(2)}`;
-            document.getElementById('cornersUnloadFast').textContent = `$${parseFloat(data.углы?.unloadCost || 0).toFixed(2)}`;
-            document.getElementById('cornersUnloadRegular').textContent = `$${parseFloat(data.углы?.unloadCost || 0).toFixed(2)}`;
-            document.getElementById('cornersInsuranceFast').textContent = `$${parseFloat(data.углы?.insurance || 0).toFixed(2)}`;
-            document.getElementById('cornersInsuranceRegular').textContent = `$${parseFloat(data.углы?.insurance || 0).toFixed(2)}`;
+            document.getElementById('cornersWeightFast').textContent = data.углы?.packedWeight || 0;
+            document.getElementById('cornersWeightRegular').textContent = data.углы?.packedWeight || 0;
+            document.getElementById('cornersPackagingFast').textContent = data.углы?.packagingCost || 0;
+            document.getElementById('cornersPackagingRegular').textContent = data.углы?.packagingCost || 0;
+            document.getElementById('cornersUnloadFast').textContent = data.углы?.unloadCost || 0;
+            document.getElementById('cornersUnloadRegular').textContent = data.углы?.unloadCost || 0;
             document.getElementById('cornersTotalFast').textContent = `$${parseFloat(data.углы?.totalFast || 0).toFixed(2)}`;
             document.getElementById('cornersTotalRegular').textContent = `$${parseFloat(data.углы?.totalRegular || 0).toFixed(2)}`;
 
             // Деревянный каркас
-            document.getElementById('frameWeightFast').textContent = parseFloat(data.каркас?.packedWeight || 0).toFixed(2);
-            document.getElementById('frameWeightRegular').textContent = parseFloat(data.каркас?.packedWeight || 0).toFixed(2);
-            document.getElementById('framePackagingFast').textContent = `$${parseFloat(data.каркас?.packagingCost || 0).toFixed(2)}`;
-            document.getElementById('framePackagingRegular').textContent = `$${parseFloat(data.каркас?.packagingCost || 0).toFixed(2)}`;
-            document.getElementById('frameUnloadFast').textContent = `$${parseFloat(data.каркас?.unloadCost || 0).toFixed(2)}`;
-            document.getElementById('frameUnloadRegular').textContent = `$${parseFloat(data.каркас?.unloadCost || 0).toFixed(2)}`;
-            document.getElementById('frameInsuranceFast').textContent = `$${parseFloat(data.каркас?.insurance || 0).toFixed(2)}`;
-            document.getElementById('frameInsuranceRegular').textContent = `$${parseFloat(data.каркас?.insurance || 0).toFixed(2)}`;
+            document.getElementById('frameWeightFast').textContent = data.каркас?.packedWeight || 0;
+            document.getElementById('frameWeightRegular').textContent = data.каркас?.packedWeight || 0;
+            document.getElementById('framePackagingFast').textContent = data.каркас?.packagingCost || 0;
+            document.getElementById('framePackagingRegular').textContent = data.каркас?.packagingCost || 0;
+            document.getElementById('frameUnloadFast').textContent = data.каркас?.unloadCost || 0;
+            document.getElementById('frameUnloadRegular').textContent = data.каркас?.unloadCost || 0;
             document.getElementById('frameTotalFast').textContent = `$${parseFloat(data.каркас?.totalFast || 0).toFixed(2)}`;
             document.getElementById('frameTotalRegular').textContent = `$${parseFloat(data.каркас?.totalRegular || 0).toFixed(2)}`;
-        }
-
-        // Функция для возврата на предыдущую страницу
-        function goBack() {
-            window.history.back();
         }
 
         // Получаем и заполняем данные
@@ -239,7 +221,7 @@
         if (jsonData) {
             fillData(jsonData);
         } else {
-            document.body.innerHTML = "<h1>Ошибка: данные не найдены или повреждены</h1>";
+            document.body.innerHTML = "<h1>Ошибка: данные не найдены</h1>";
         }
     </script>
 </body>
