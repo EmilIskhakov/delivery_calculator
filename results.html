@@ -201,7 +201,7 @@
             }
             try {
                 const parsedData = JSON.parse(decodeURIComponent(resultsParam));
-                console.log("Полученные данные:", parsedData); // Выведите данные в консоль для проверки
+                console.log("Полученные данные:", parsedData); 
                 return parsedData;
             } catch (error) {
                 console.error('Ошибка при парсинге данных:', error);
@@ -216,13 +216,11 @@
                 alert("Ошибка: некорректные данные!");
                 return;
             }
+
             // Общая информация
             document.getElementById('weight').textContent = data.общаяИнформация?.вес || 0;
             document.getElementById('density').textContent = data.общаяИнформация?.плотность || 0;
             document.getElementById('productCost').textContent = data.общаяИнформация?.стоимостьТовара || 0;
-
-            // Страховка
-            const insuranceAmount = parseFloat(data.общаяИнформация?.страховкаСумма || 0).toFixed(2);
 
             // Мешок
             document.getElementById('bagWeightFast').textContent = data.мешок?.packedWeight || 0;
@@ -231,8 +229,8 @@
             document.getElementById('bagPackagingRegular').textContent = data.мешок?.packagingCost || 0;
             document.getElementById('bagUnloadFast').textContent = data.мешок?.unloadCost || 0;
             document.getElementById('bagUnloadRegular').textContent = data.мешок?.unloadCost || 0;
-            document.getElementById('bagInsuranceFast').textContent = `$${insuranceAmount}`;
-            document.getElementById('bagInsuranceRegular').textContent = `$${insuranceAmount}`;
+            document.getElementById('bagInsuranceFast').textContent = `$${parseFloat(data.мешок?.insurance || 0).toFixed(2)}`;
+            document.getElementById('bagInsuranceRegular').textContent = `$${parseFloat(data.мешок?.insurance || 0).toFixed(2)}`;
             document.getElementById('bagTotalFast').textContent = `$${parseFloat(data.мешок?.totalFast || 0).toFixed(2)}`;
             document.getElementById('bagTotalRegular').textContent = `$${parseFloat(data.мешок?.totalRegular || 0).toFixed(2)}`;
 
@@ -243,8 +241,8 @@
             document.getElementById('cornersPackagingRegular').textContent = data.углы?.packagingCost || 0;
             document.getElementById('cornersUnloadFast').textContent = data.углы?.unloadCost || 0;
             document.getElementById('cornersUnloadRegular').textContent = data.углы?.unloadCost || 0;
-            document.getElementById('cornersInsuranceFast').textContent = `$${insuranceAmount}`;
-            document.getElementById('cornersInsuranceRegular').textContent = `$${insuranceAmount}`;
+            document.getElementById('cornersInsuranceFast').textContent = `$${parseFloat(data.углы?.insurance || 0).toFixed(2)}`;
+            document.getElementById('cornersInsuranceRegular').textContent = `$${parseFloat(data.углы?.insurance || 0).toFixed(2)}`;
             document.getElementById('cornersTotalFast').textContent = `$${parseFloat(data.углы?.totalFast || 0).toFixed(2)}`;
             document.getElementById('cornersTotalRegular').textContent = `$${parseFloat(data.углы?.totalRegular || 0).toFixed(2)}`;
 
@@ -255,8 +253,8 @@
             document.getElementById('framePackagingRegular').textContent = data.каркас?.packagingCost || 0;
             document.getElementById('frameUnloadFast').textContent = data.каркас?.unloadCost || 0;
             document.getElementById('frameUnloadRegular').textContent = data.каркас?.unloadCost || 0;
-            document.getElementById('frameInsuranceFast').textContent = `$${insuranceAmount}`;
-            document.getElementById('frameInsuranceRegular').textContent = `$${insuranceAmount}`;
+            document.getElementById('frameInsuranceFast').textContent = `$${parseFloat(data.каркас?.insurance || 0).toFixed(2)}`;
+            document.getElementById('frameInsuranceRegular').textContent = `$${parseFloat(data.каркас?.insurance || 0).toFixed(2)}`;
             document.getElementById('frameTotalFast').textContent = `$${parseFloat(data.каркас?.totalFast || 0).toFixed(2)}`;
             document.getElementById('frameTotalRegular').textContent = `$${parseFloat(data.каркас?.totalRegular || 0).toFixed(2)}`;
         }
