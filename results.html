@@ -1,36 +1,343 @@
-{
-  "общаяИнформация": {
-    "категория": "Обычные товары",
-    "вес": 50,
-    "плотность": "178.25",
-    "стоимостьТовара": 250,
-    "страховкаПроцент": "1%",
-    "страховкаСумма": "2.50",
-    "объем": "0.28",
-    "количествоКоробок": 5
-  },
-  "мешок": {
-    "packedWeight": 56.5,
-    "packagingCost": 15,
-    "unloadCost": 20,
-    "insurance": 2.5,
-    "totalFast": "37.50",
-    "totalRegular": "37.50"
-  },
-  "углы": {
-    "packedWeight": 60,
-    "packagingCost": 40,
-    "unloadCost": 20,
-    "insurance": 2.5,
-    "totalFast": "62.50",
-    "totalRegular": "62.50"
-  },
-  "каркас": {
-    "packedWeight": 130,
-    "packagingCost": 75,
-    "unloadCost": 20,
-    "insurance": 2.5,
-    "totalFast": "97.50",
-    "totalRegular": "97.50"
-  }
-}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результат расчета доставки</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f8f8;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .button {
+            background-color: #E74C3C;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #C0392B;
+        }
+    </style>
+</head>
+<body>
+    <h1>Результат расчета доставки</h1>
+    <!-- Общая информация -->
+    <div class="section">
+        <h2>Общая информация</h2>
+        <p><strong>Категория:</strong> <span id="category">-</span></p>
+        <p><strong>Количество коробок:</strong> <span id="quantity">0</span></p>
+        <p><strong>Общий вес:</strong> <span id="totalWeight">0</span> кг</p>
+        <p><strong>Общий объем:</strong> <span id="totalVolume">0</span> м³</p>
+        <p><strong>Плотность:</strong> <span id="density">0</span> кг/м³</p>
+        <p><strong>Стоимость товара:</strong> $<span id="productCost">0</span></p>
+        <p><strong>Страховка (%):</strong> <span id="insuranceRate">0</span></p>
+        <p><strong>Страховка (сумма):</strong> $<span id="insuranceAmount">0</span></p>
+    </div>
+    <!-- Мешок -->
+    <div class="section">
+        <h2>Мешок</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Быстрое авто</th>
+                    <th>Обычное авто</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Вес с упаковкой</td>
+                    <td id="bagWeightFast">0</td>
+                    <td id="bagWeightRegular">0</td>
+                </tr>
+                <tr>
+                    <td>Стоимость упаковки</td>
+                    <td id="bagPackagingFast">$0.00</td>
+                    <td id="bagPackagingRegular">$0.00</td>
+                </tr>
+                <tr>
+                    <td>Стоимость разгрузки</td>
+                    <td id="bagUnloadFast">$0.00</td>
+                    <td id="bagUnloadRegular">$0.00</td>
+                </tr>
+                <tr>
+                    <td>Страховка</td>
+                    <td id="bagInsuranceFast">$0.00</td>
+                    <td id="bagInsuranceRegular">$0.00</td>
+                </tr>
+                <tr>
+                    <td><strong>Итого</strong></td>
+                    <td id="bagTotalFast">$0.00</td>
+                    <td id="bagTotalRegular">$0.00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Картонные уголки -->
+    <div class="section">
+        <h2>Картонные уголки</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Быстрое авто</th>
+                    <th>Обычное авто</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Вес с упаковкой</td>
+                    <td id="cornersWeightFast">0</td>
+                    <td id="cornersWeightRegular">0</td>
+                </tr>
+                <tr>
+                    <td>Стоимость упаковки</td>
+                    <td id="cornersPackagingFast">$0.00</td>
+                    <td id="cornersPackagingRegular">$0.00</td>
+                </tr>
+                <tr>
+                    <td>Стоимость разгрузки</td>
+                    <td id="cornersUnloadFast">$0.00</td>
+                    <td id="cornersUnloadRegular">$0.00</td>
+                </tr>
+                <tr>
+                    <td>Страховка</td>
+                    <td id="cornersInsuranceFast">$0.00</td>
+                    <td id="cornersInsuranceRegular">$0.00</td>
+                </tr>
+                <tr>
+                    <td><strong>Итого</strong></td>
+                    <td id="cornersTotalFast">$0.00</td>
+                    <td id="cornersTotalRegular">$0.00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Деревянный каркас -->
+    <div class="section">
+        <h2>Деревянный каркас</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Быстрое авто</th>
+                    <th>Обычное авто</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Вес с упаковкой</td>
+                    <td id="frameWeightFast">0</td>
+                    <td id="frameWeightRegular">0</td>
+                </tr>
+                <tr>
+                    <td>Стоимость упаковки</td>
+                    <td id="framePackagingFast">$0.00</td>
+                    <td id="framePackagingRegular">$0.00</td>
+                </tr>
+                <tr>
+                    <td>Стоимость разгрузки</td>
+                    <td id="frameUnloadFast">$0.00</td>
+                    <td id="frameUnloadRegular">$0.00</td>
+                </tr>
+                <tr>
+                    <td>Страховка</td>
+                    <td id="frameInsuranceFast">$0.00</td>
+                    <td id="frameInsuranceRegular">$0.00</td>
+                </tr>
+                <tr>
+                    <td><strong>Итого</strong></td>
+                    <td id="frameTotalFast">$0.00</td>
+                    <td id="frameTotalRegular">$0.00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Кнопки действий -->
+    <div class="button-container">
+        <button class="button" onclick="goBack()">Вернуться на предыдущую страницу</button>
+        <button class="button" onclick="saveAsCSV()">Сохранить расчет как CSV</button>
+    </div>
+
+    <script>
+        // Функция для получения данных из URL
+        function getResultsFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const resultsParam = urlParams.get('results');
+            if (!resultsParam) {
+                alert("Ошибка: данные не найдены!");
+                return null;
+            }
+            try {
+                const parsedData = JSON.parse(decodeURIComponent(resultsParam));
+                console.log("Полученные данные:", parsedData);
+                return parsedData;
+            } catch (error) {
+                console.error('Ошибка при парсинге данных:', error);
+                alert("Произошла ошибка при обработке результатов!");
+                return null;
+            }
+        }
+
+        // Функция для заполнения данных
+        function fillData(data) {
+            if (!data || typeof data !== 'object') {
+                alert("Ошибка: некорректные данные!");
+                return;
+            }
+
+            // Общая информация
+            document.getElementById('category').textContent = data.общаяИнформация?.категория || '-';
+            document.getElementById('quantity').textContent = data.общаяИнформация?.количествоКоробок || 0;
+            document.getElementById('totalWeight').textContent = data.общаяИнформация?.вес || 0;
+            document.getElementById('totalVolume').textContent = data.общаяИнформация?.объем || 0;
+            document.getElementById('density').textContent = data.общаяИнформация?.плотность || 0;
+            document.getElementById('productCost').textContent = data.общаяИнформация?.стоимостьТовара || 0;
+            document.getElementById('insuranceRate').textContent = data.общаяИнформация?.страховкаПроцент || 0;
+            document.getElementById('insuranceAmount').textContent = parseFloat(data.общаяИнформация?.страховкаСумма || 0).toFixed(2);
+
+            // Мешок
+            document.getElementById('bagWeightFast').textContent = parseFloat(data.мешок?.packedWeight || 0).toFixed(2);
+            document.getElementById('bagWeightRegular').textContent = parseFloat(data.мешок?.packedWeight || 0).toFixed(2);
+            document.getElementById('bagPackagingFast').textContent = `$${parseFloat(data.мешок?.packagingCost || 0).toFixed(2)}`;
+            document.getElementById('bagPackagingRegular').textContent = `$${parseFloat(data.мешок?.packagingCost || 0).toFixed(2)}`;
+            document.getElementById('bagUnloadFast').textContent = `$${parseFloat(data.мешок?.unloadCost || 0).toFixed(2)}`;
+            document.getElementById('bagUnloadRegular').textContent = `$${parseFloat(data.мешок?.unloadCost || 0).toFixed(2)}`;
+            document.getElementById('bagInsuranceFast').textContent = `$${parseFloat(data.мешок?.insurance || 0).toFixed(2)}`;
+            document.getElementById('bagInsuranceRegular').textContent = `$${parseFloat(data.мешок?.insurance || 0).toFixed(2)}`;
+            document.getElementById('bagTotalFast').textContent = `$${parseFloat(data.мешок?.totalFast || 0).toFixed(2)}`;
+            document.getElementById('bagTotalRegular').textContent = `$${parseFloat(data.мешок?.totalRegular || 0).toFixed(2)}`;
+
+            // Картонные уголки
+            document.getElementById('cornersWeightFast').textContent = parseFloat(data.углы?.packedWeight || 0).toFixed(2);
+            document.getElementById('cornersWeightRegular').textContent = parseFloat(data.углы?.packedWeight || 0).toFixed(2);
+            document.getElementById('cornersPackagingFast').textContent = `$${parseFloat(data.углы?.packagingCost || 0).toFixed(2)}`;
+            document.getElementById('cornersPackagingRegular').textContent = `$${parseFloat(data.углы?.packagingCost || 0).toFixed(2)}`;
+            document.getElementById('cornersUnloadFast').textContent = `$${parseFloat(data.углы?.unloadCost || 0).toFixed(2)}`;
+            document.getElementById('cornersUnloadRegular').textContent = `$${parseFloat(data.углы?.unloadCost || 0).toFixed(2)}`;
+            document.getElementById('cornersInsuranceFast').textContent = `$${parseFloat(data.углы?.insurance || 0).toFixed(2)}`;
+            document.getElementById('cornersInsuranceRegular').textContent = `$${parseFloat(data.углы?.insurance || 0).toFixed(2)}`;
+            document.getElementById('cornersTotalFast').textContent = `$${parseFloat(data.углы?.totalFast || 0).toFixed(2)}`;
+            document.getElementById('cornersTotalRegular').textContent = `$${parseFloat(data.углы?.totalRegular || 0).toFixed(2)}`;
+
+            // Деревянный каркас
+            document.getElementById('frameWeightFast').textContent = parseFloat(data.каркас?.packedWeight || 0).toFixed(2);
+            document.getElementById('frameWeightRegular').textContent = parseFloat(data.каркас?.packedWeight || 0).toFixed(2);
+            document.getElementById('framePackagingFast').textContent = `$${parseFloat(data.каркас?.packagingCost || 0).toFixed(2)}`;
+            document.getElementById('framePackagingRegular').textContent = `$${parseFloat(data.каркас?.packagingCost || 0).toFixed(2)}`;
+            document.getElementById('frameUnloadFast').textContent = `$${parseFloat(data.каркас?.unloadCost || 0).toFixed(2)}`;
+            document.getElementById('frameUnloadRegular').textContent = `$${parseFloat(data.каркас?.unloadCost || 0).toFixed(2)}`;
+            document.getElementById('frameInsuranceFast').textContent = `$${parseFloat(data.каркас?.insurance || 0).toFixed(2)}`;
+            document.getElementById('frameInsuranceRegular').textContent = `$${parseFloat(data.каркас?.insurance || 0).toFixed(2)}`;
+            document.getElementById('frameTotalFast').textContent = `$${parseFloat(data.каркас?.totalFast || 0).toFixed(2)}`;
+            document.getElementById('frameTotalRegular').textContent = `$${parseFloat(data.каркас?.totalRegular || 0).toFixed(2)}`;
+        }
+
+        // Функция для возврата на предыдущую страницу
+        function goBack() {
+            window.history.back();
+        }
+
+        // Функция для сохранения данных в формате CSV
+        function saveAsCSV() {
+            const jsonData = getResultsFromUrl();
+            if (!jsonData) {
+                alert("Ошибка: данные не найдены!");
+                return;
+            }
+
+            // Преобразуем JSON в CSV
+            const csvContent = [
+                ["Категория", "Количество коробок", "Общий вес (кг)", "Общий объем (м³)", "Плотность (кг/м³)", "Стоимость товара ($)", "Страховка (%)", "Страховка (сумма) ($)"],
+                [
+                    jsonData.общаяИнформация?.категория || '-',
+                    jsonData.общаяИнформация?.количествоКоробок || 0,
+                    jsonData.общаяИнформация?.вес || 0,
+                    jsonData.общаяИнформация?.объем || 0,
+                    jsonData.общаяИнформация?.плотность || 0,
+                    jsonData.общаяИнформация?.стоимостьТовара || 0,
+                    jsonData.общаяИнформация?.страховкаПроцент || 0,
+                    parseFloat(jsonData.общаяИнформация?.страховкаСумма || 0).toFixed(2)
+                ],
+                [],
+                ["Тип упаковки", "Вес с упаковкой (кг)", "Стоимость упаковки ($)", "Стоимость разгрузки ($)", "Страховка ($)", "Итого быстрое ($)", "Итого обычное ($)"]
+            ];
+
+            // Добавляем данные для каждого типа упаковки
+            const packagingTypes = ['мешок', 'углы', 'каркас'];
+            packagingTypes.forEach(type => {
+                const row = jsonData[type];
+                if (row) {
+                    csvContent.push([
+                        type,
+                        parseFloat(row.packedWeight || 0).toFixed(2),
+                        parseFloat(row.packagingCost || 0).toFixed(2),
+                        parseFloat(row.unloadCost || 0).toFixed(2),
+                        parseFloat(row.insurance || 0).toFixed(2),
+                        parseFloat(row.totalFast || 0).toFixed(2),
+                        parseFloat(row.totalRegular || 0).toFixed(2)
+                    ]);
+                }
+            });
+
+            // Создаем CSV-строку
+            const csvString = csvContent.map(row => row.join(",")).join("\n");
+
+            // Создаем ссылку для скачивания
+            const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'calculation_results.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+
+            alert("Расчет успешно сохранен в формате CSV!");
+        }
+
+        // Получаем и заполняем данные
+        const jsonData = getResultsFromUrl();
+        if (jsonData) {
+            fillData(jsonData);
+        } else {
+            document.body.innerHTML = "<h1>Ошибка: данные не найдены</h1>";
+        }
+    </script>
+</body>
+</html>
