@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результаты расчета</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #E74C3C;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        .result-table {
+            margin-top: 20px;
+        }
+
+        .total {
+            font-weight: bold;
+            color: #E74C3C;
+        }
+    </style>
+</head>
+<body>
+    <h1>Результаты расчета стоимости доставки</h1>
+
+    <div id="results"></div>
+
+    <script>
+        // Функция для создания таблицы с результатами
+        function createResultsTable(data) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = ''; // Очищаем предыдущие результаты
+
+            const packagingTypes = ["Мешок", "Картонные уголки", "Деревянный каркас"];
+
+            packagingTypes.forEach(type => {
+                const resultData = data[type.toLowerCase()];
+                if (!resultData) return;
+
+                const table = document.createElement('table');
+
+                // Заголовок таблицы
+                const caption = document.createElement('caption');
+                caption.textContent = `${type} | Быстрое авто | Обычное авто`;
+                table.appendChild(caption);
+
+                // Строки таблицы
+                const rows = [
+                    { label: "Вес с упаковкой", fast: resultData.packedWeight, regular: resultData.packedWeight },
+                    { label: "Стоимость доставки", fast: resultData.fastAutoCost, regular: resultData.regularAutoCost },
+                    { label: "Упаковка", fast: resultData.packagingCost, regular: resultData.packagingCost },
+                    { label: "Разгрузочные работы", fast: resultData.unloadCost, regular: resultData.unloadCost },
+                    { label: "Страховка", fast: resultData.insurance, regular: resultData.insurance },
+                    { label: "Итого", fast: resultData.totalFast, regular: resultData.totalRegular }
+                ];
+
+                // Создаем заголовки
+                const headerRow = document.createElement('tr');
+                const headerCell = document.createElement('th');
+                headerCell.textContent = "";
+                headerRow.appendChild(headerCell);
+
+                const fastHeader = document.createElement('th');
+                fastHeader.textContent = "Быстрое";
+                headerRow.appendChild(fastHeader);
+
+                const regularHeader = document.createElement('th');
+                regularHeader.textContent = "Обычное";
+                headerRow.appendChild(regularHeader);
+
+                table.appendChild(headerRow);
+
+                // Создаем строки
+                rows.forEach(row => {
+                    const rowElement = document.createElement('tr');
+
+                    const labelCell = document.createElement('td');
+                    labelCell.textContent = row.label;
+                    rowElement.appendChild(labelCell);
+
+                    const fastCell = document.createElement('td');
+                    fastCell.textContent = `$${row.fast.toFixed(2)}`;
+                    rowElement.appendChild(fastCell);
+
+                    const regularCell = document.createElement('td');
+                    regularCell.textContent = `$${row.regular.toFixed(2)}`;
+                    rowElement.appendChild(regularCell);
+
+                    table.appendChild(rowElement);
+                });
+
+                resultsDiv.appendChild(table);
+            });
+        }
+
+        // Проверяем наличие данных в URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const results = JSON.parse(decodeURIComponent(urlParams.get('results')));
+
+        if (results) {
+            createResultsTable(results);
+        } else {
+            alert("Ошибка: данные не найдены!");
+        }
+    </script>
+</body>
+</html>
