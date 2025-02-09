@@ -14,6 +14,21 @@
         h1 {
             color: #333;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f8f8;
+        }
         .section {
             margin-bottom: 20px;
             padding: 15px;
@@ -21,90 +36,155 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        .section h2 {
-            margin-top: 0;
-            color: #555;
-        }
-        .section p {
-            margin: 5px 0;
-        }
     </style>
 </head>
 <body>
     <h1>Результат расчета доставки</h1>
 
     <!-- Общая информация -->
-    <div class="section" id="generalInfo">
-        <h2>Общая информация</h2>
-        <p><strong>Вес:</strong> <span id="weight">0</span> кг</p>
-        <p><strong>Плотность:</strong> <span id="density">NaN</span></p>
+    <div class="section">
+        <h2>Общая введенная информация</h2>
+        <p><strong>Вес товара:</strong> <span id="weight">0</span> кг</p>
+        <p><strong>Плотность:</strong> <span id="density">0</span></p>
         <p><strong>Стоимость товара:</strong> $<span id="productCost">0</span></p>
     </div>
 
     <!-- Мешок -->
-    <div class="section" id="bagInfo">
+    <div class="section">
         <h2>Мешок</h2>
-        <p><strong>Вес с упаковкой:</strong> <span id="bagWeight">0</span> кг</p>
-        <p><strong>Стоимость упаковки:</strong> $<span id="bagPackagingCost">0</span></p>
-        <p><strong>Стоимость разгрузки:</strong> $<span id="bagUnloadCost">0</span></p>
-        <p><strong>Страховка:</strong> $<span id="bagInsurance">0</span></p>
-        <p><strong>Итого (быстрое авто):</strong> $<span id="bagTotalFast">0</span></p>
-        <p><strong>Итого (обычное авто):</strong> $<span id="bagTotalRegular">0</span></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Быстрое</th>
+                    <th>Обычное</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Вес с упаковкой</td>
+                    <td id="bagWeightFast">0</td>
+                    <td id="bagWeightRegular">0</td>
+                </tr>
+                <tr>
+                    <td>Упаковка</td>
+                    <td id="bagPackagingFast">0</td>
+                    <td id="bagPackagingRegular">0</td>
+                </tr>
+                <tr>
+                    <td>Разгрузочные работы</td>
+                    <td id="bagUnloadFast">0</td>
+                    <td id="bagUnloadRegular">0</td>
+                </tr>
+                <tr>
+                    <td><strong>Итого</strong></td>
+                    <td id="bagTotalFast">$0.00</td>
+                    <td id="bagTotalRegular">$0.00</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <!-- Картонные уголки -->
-    <div class="section" id="cornersInfo">
+    <div class="section">
         <h2>Картонные уголки</h2>
-        <p><strong>Вес с упаковкой:</strong> <span id="cornersWeight">0</span> кг</p>
-        <p><strong>Стоимость упаковки:</strong> $<span id="cornersPackagingCost">0</span></p>
-        <p><strong>Стоимость разгрузки:</strong> $<span id="cornersUnloadCost">0</span></p>
-        <p><strong>Страховка:</strong> $<span id="cornersInsurance">0</span></p>
-        <p><strong>Итого (быстрое авто):</strong> $<span id="cornersTotalFast">0</span></p>
-        <p><strong>Итого (обычное авто):</strong> $<span id="cornersTotalRegular">0</span></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Быстрое авто</th>
+                    <th>Обычное авто</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Вес с упаковкой</td>
+                    <td id="cornersWeightFast">0</td>
+                    <td id="cornersWeightRegular">0</td>
+                </tr>
+                <tr>
+                    <td>Упаковка</td>
+                    <td id="cornersPackagingFast">0</td>
+                    <td id="cornersPackagingRegular">0</td>
+                </tr>
+                <tr>
+                    <td>Разгрузочные работы</td>
+                    <td id="cornersUnloadFast">0</td>
+                    <td id="cornersUnloadRegular">0</td>
+                </tr>
+                <tr>
+                    <td><strong>Итого</strong></td>
+                    <td id="cornersTotalFast">$0.00</td>
+                    <td id="cornersTotalRegular">$0.00</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <!-- Деревянный каркас -->
-    <div class="section" id="frameInfo">
+    <div class="section">
         <h2>Деревянный каркас</h2>
-        <p><strong>Вес с упаковкой:</strong> <span id="frameWeight">0</span> кг</p>
-        <p><strong>Стоимость упаковки:</strong> $<span id="framePackagingCost">0</span></p>
-        <p><strong>Стоимость разгрузки:</strong> $<span id="frameUnloadCost">0</span></p>
-        <p><strong>Страховка:</strong> $<span id="frameInsurance">0</span></p>
-        <p><strong>Итого (быстрое авто):</strong> $<span id="frameTotalFast">0</span></p>
-        <p><strong>Итого (обычное авто):</strong> $<span id="frameTotalRegular">0</span></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Быстрое</th>
+                    <th>Обычное</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Вес с упаковкой</td>
+                    <td id="frameWeightFast">0</td>
+                    <td id="frameWeightRegular">0</td>
+                </tr>
+                <tr>
+                    <td>Упаковка</td>
+                    <td id="framePackagingFast">0</td>
+                    <td id="framePackagingRegular">0</td>
+                </tr>
+                <tr>
+                    <td>Разгрузочные работы</td>
+                    <td id="frameUnloadFast">0</td>
+                    <td id="frameUnloadRegular">0</td>
+                </tr>
+                <tr>
+                    <td><strong>Итого</strong></td>
+                    <td id="frameTotalFast">$0.00</td>
+                    <td id="frameTotalRegular">$0.00</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <script>
         // Пример JSON-данных (замените на данные из Google Sheets)
         const jsonData = {
             "общаяИнформация": {
-                "вес": 10,
-                "плотность": "0.5",
-                "стоимостьТовара": 100
+                "вес": 100,
+                "плотность": 166,
+                "стоимостьТовара": 1000
             },
             "мешок": {
-                "packedWeight": 1.3,
-                "packagingCost": 3,
-                "unloadCost": 4,
-                "insurance": 0,
-                "totalFast": "7.00",
-                "totalRegular": "7.00"
+                "packedWeight": 102,
+                "packagingCost": 12,
+                "unloadCost": 16,
+                "totalFast": 344,
+                "totalRegular": 344
             },
             "углы": {
-                "packedWeight": 2,
-                "packagingCost": 8,
-                "unloadCost": 4,
-                "insurance": 0,
-                "totalFast": "12.00",
-                "totalRegular": "12.00"
+                "packedWeight": 106,
+                "packagingCost": 32,
+                "unloadCost": 16,
+                "totalFast": 482,
+                "totalRegular": 376
             },
             "каркас": {
-                "packedWeight": 2,
-                "packagingCost": 15,
-                "unloadCost": 4,
-                "insurance": 0,
-                "totalFast": "19.00",
-                "totalRegular": "19.00"
+                "packedWeight": 120,
+                "packagingCost": 30,
+                "unloadCost": 16,
+                "totalFast": 536,
+                "totalRegular": 416
             }
         };
 
@@ -116,28 +196,34 @@
             document.getElementById('productCost').textContent = data.общаяИнформация.стоимостьТовара;
 
             // Мешок
-            document.getElementById('bagWeight').textContent = data.мешок.packedWeight;
-            document.getElementById('bagPackagingCost').textContent = data.мешок.packagingCost;
-            document.getElementById('bagUnloadCost').textContent = data.мешок.unloadCost;
-            document.getElementById('bagInsurance').textContent = data.мешок.insurance;
-            document.getElementById('bagTotalFast').textContent = data.мешок.totalFast;
-            document.getElementById('bagTotalRegular').textContent = data.мешок.totalRegular;
+            document.getElementById('bagWeightFast').textContent = data.мешок.packedWeight;
+            document.getElementById('bagWeightRegular').textContent = data.мешок.packedWeight;
+            document.getElementById('bagPackagingFast').textContent = data.мешок.packagingCost;
+            document.getElementById('bagPackagingRegular').textContent = data.мешок.packagingCost;
+            document.getElementById('bagUnloadFast').textContent = data.мешок.unloadCost;
+            document.getElementById('bagUnloadRegular').textContent = data.мешок.unloadCost;
+            document.getElementById('bagTotalFast').textContent = `$${data.мешок.totalFast.toFixed(2)}`;
+            document.getElementById('bagTotalRegular').textContent = `$${data.мешок.totalRegular.toFixed(2)}`;
 
             // Картонные уголки
-            document.getElementById('cornersWeight').textContent = data.углы.packedWeight;
-            document.getElementById('cornersPackagingCost').textContent = data.углы.packagingCost;
-            document.getElementById('cornersUnloadCost').textContent = data.углы.unloadCost;
-            document.getElementById('cornersInsurance').textContent = data.углы.insurance;
-            document.getElementById('cornersTotalFast').textContent = data.углы.totalFast;
-            document.getElementById('cornersTotalRegular').textContent = data.углы.totalRegular;
+            document.getElementById('cornersWeightFast').textContent = data.углы.packedWeight;
+            document.getElementById('cornersWeightRegular').textContent = data.углы.packedWeight;
+            document.getElementById('cornersPackagingFast').textContent = data.углы.packagingCost;
+            document.getElementById('cornersPackagingRegular').textContent = data.углы.packagingCost;
+            document.getElementById('cornersUnloadFast').textContent = data.углы.unloadCost;
+            document.getElementById('cornersUnloadRegular').textContent = data.углы.unloadCost;
+            document.getElementById('cornersTotalFast').textContent = `$${data.углы.totalFast.toFixed(2)}`;
+            document.getElementById('cornersTotalRegular').textContent = `$${data.углы.totalRegular.toFixed(2)}`;
 
             // Деревянный каркас
-            document.getElementById('frameWeight').textContent = data.каркас.packedWeight;
-            document.getElementById('framePackagingCost').textContent = data.каркас.packagingCost;
-            document.getElementById('frameUnloadCost').textContent = data.каркас.unloadCost;
-            document.getElementById('frameInsurance').textContent = data.каркас.insurance;
-            document.getElementById('frameTotalFast').textContent = data.каркас.totalFast;
-            document.getElementById('frameTotalRegular').textContent = data.каркас.totalRegular;
+            document.getElementById('frameWeightFast').textContent = data.каркас.packedWeight;
+            document.getElementById('frameWeightRegular').textContent = data.каркас.packedWeight;
+            document.getElementById('framePackagingFast').textContent = data.каркас.packagingCost;
+            document.getElementById('framePackagingRegular').textContent = data.каркас.packagingCost;
+            document.getElementById('frameUnloadFast').textContent = data.каркас.unloadCost;
+            document.getElementById('frameUnloadRegular').textContent = data.каркас.unloadCost;
+            document.getElementById('frameTotalFast').textContent = `$${data.каркас.totalFast.toFixed(2)}`;
+            document.getElementById('frameTotalRegular').textContent = `$${data.каркас.totalRegular.toFixed(2)}`;
         }
 
         // Заполняем данные при загрузке страницы
