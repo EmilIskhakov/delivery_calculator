@@ -38,8 +38,7 @@
         }
         .button-container {
             display: flex;
-            justify-content: space-between;
-            gap: 10px;
+            justify-content: center;
         }
         .button {
             background-color: #E74C3C;
@@ -194,10 +193,9 @@
         </table>
     </div>
 
-    <!-- Кнопки действий -->
+    <!-- Кнопка возврата -->
     <div class="button-container">
         <button class="button" onclick="goBack()">Вернуться на предыдущую страницу</button>
-        <button class="button" onclick="saveAsCSV()">Сохранить расчет как CSV</button>
     </div>
 
     <script>
@@ -277,63 +275,6 @@
         // Функция для возврата на предыдущую страницу
         function goBack() {
             window.history.back();
-        }
-
-        // Функция для сохранения данных в формате CSV
-        function saveAsCSV() {
-            const jsonData = getResultsFromUrl();
-            if (!jsonData) {
-                alert("Ошибка: данные не найдены!");
-                return;
-            }
-
-            // Преобразуем JSON в CSV
-            const csvContent = [
-                ["Категория", "Количество коробок", "Общий вес (кг)", "Общий объем (м³)", "Плотность (кг/м³)", "Стоимость товара ($)", "Страховка (%)", "Страховка (сумма) ($)"],
-                [
-                    jsonData.общаяИнформация?.категория || '-',
-                    jsonData.общаяИнформация?.количествоКоробок || 0,
-                    parseFloat(jsonData.общаяИнформация?.вес || 0).toFixed(2),
-                    parseFloat(jsonData.общаяИнформация?.объем || 0).toFixed(2),
-                    parseFloat(jsonData.общаяИнформация?.плотность || 0).toFixed(2),
-                    parseFloat(jsonData.общаяИнформация?.стоимостьТовара || 0).toFixed(2),
-                    jsonData.общаяИнформация?.страховкаПроцент || 0,
-                    parseFloat(jsonData.общаяИнформация?.страховкаСумма || 0).toFixed(2)
-                ],
-                [],
-                ["Тип упаковки", "Вес с упаковкой (кг)", "Стоимость упаковки ($)", "Стоимость разгрузки ($)", "Страховка ($)", "Итого быстрое ($)", "Итого обычное ($)"]
-            ];
-
-            // Добавляем данные для каждого типа упаковки
-            const packagingTypes = ['мешок', 'углы', 'каркас'];
-            packagingTypes.forEach(type => {
-                const row = jsonData[type];
-                if (row) {
-                    csvContent.push([
-                        type,
-                        parseFloat(row.packedWeight || 0).toFixed(2),
-                        parseFloat(row.packagingCost || 0).toFixed(2),
-                        parseFloat(row.unloadCost || 0).toFixed(2),
-                        parseFloat(row.insurance || 0).toFixed(2),
-                        parseFloat(row.totalFast || 0).toFixed(2),
-                        parseFloat(row.totalRegular || 0).toFixed(2)
-                    ]);
-                }
-            });
-
-            // Создаем CSV-строку
-            const csvString = csvContent.map(row => row.join(",")).join("\n");
-
-            // Создаем ссылку для скачивания
-            const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'calculation_results.csv';
-            a.click();
-            URL.revokeObjectURL(url);
-
-            alert("Расчет успешно сохранен в формате CSV!");
         }
 
         // Получаем и заполняем данные
