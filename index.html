@@ -10,39 +10,34 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f9f9f9; /* Белый фон с легкой серой подсветкой */
-            color: #333; /* Темно-серый текст */
+            background-color: #f9f9f9;
+            color: #333;
         }
-        /* Заголовок */
         h1 {
-            color: #E74C3C; /* Красный цвет заголовка */
+            color: #E74C3C;
             text-align: center;
             margin-bottom: 20px;
         }
-        /* Логотип */
         .logo {
             display: block;
-            margin: 0 auto 20px auto; /* Центрируем логотип */
+            margin: 0 auto 20px auto;
             max-width: 150px;
             height: auto;
         }
-        /* Форма */
         form {
-            background-color: #ffffff; /* Белый фон формы */
+            background-color: #ffffff;
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тени для эффекта глубины */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin: 0 auto;
-            max-width: 400px; /* Ограничение ширины формы */
+            max-width: 400px;
         }
-        /* Метки полей ввода */
         label {
             font-weight: bold;
             margin-bottom: 5px;
             display: block;
-            color: #AA4444; /* Темно-красный цвет меток */
+            color: #AA4444;
         }
-        /* Поля ввода и выпадающие списки */
         input, select {
             width: 100%;
             padding: 10px;
@@ -52,9 +47,8 @@
             font-size: 16px;
             box-sizing: border-box;
         }
-        /* Кнопка отправки */
         input[type="submit"] {
-            background-color: #E74C3C; /* Красная кнопка */
+            background-color: #E74C3C;
             color: white;
             border: none;
             padding: 12px;
@@ -64,9 +58,8 @@
             width: 100%;
         }
         input[type="submit"]:hover {
-            background-color: #C0392B; /* Темно-красный при наведении */
+            background-color: #C0392B;
         }
-        /* Стили для скрытия клавиатуры */
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
@@ -90,36 +83,37 @@
         </select>
         <!-- Вес одной коробки -->
         <label for="weight">Вес одной коробки (кг):</label>
-        <input type="number" id="weight" name="weight" required min="0.1" step="any" tabindex="2"
-               onblur="this.blur()" placeholder="Введите вес">
+        <input type="number" id="weight" name="weight" required min="0.1" step="any" tabindex="2" onblur="this.blur()" placeholder="Введите вес">
         <!-- Размеры коробки -->
         <label for="length">Длина коробки (см):</label>
-        <input type="number" id="length" name="length" required min="1" step="any" tabindex="3"
-               onblur="this.blur()" placeholder="Введите длину">
+        <input type="number" id="length" name="length" required min="1" step="any" tabindex="3" onblur="this.blur()" placeholder="Введите длину">
         <label for="width">Ширина коробки (см):</label>
-        <input type="number" id="width" name="width" required min="1" step="any" tabindex="4"
-               onblur="this.blur()" placeholder="Введите ширину">
+        <input type="number" id="width" name="width" required min="1" step="any" tabindex="4" onblur="this.blur()" placeholder="Введите ширину">
         <label for="height">Высота коробки (см):</label>
-        <input type="number" id="height" name="height" required min="1" step="any" tabindex="5"
-               onblur="this.blur()" placeholder="Введите высоту">
+        <input type="number" id="height" name="height" required min="1" step="any" tabindex="5" onblur="this.blur()" placeholder="Введите высоту">
         <!-- Стоимость товара -->
         <label for="cost">Стоимость товара ($):</label>
-        <input type="number" id="cost" name="cost" required min="0.01" step="any" tabindex="6"
-               onblur="this.blur()" placeholder="Введите стоимость">
+        <input type="number" id="cost" name="cost" required min="0.01" step="any" tabindex="6" onblur="this.blur()" placeholder="Введите стоимость">
         <!-- Кнопка отправки формы -->
         <input type="submit" value="Рассчитать стоимость" tabindex="7">
     </form>
     <script>
         // Функция для выполнения расчетов
         function calculateCost(data) {
-            fetch(`https://script.google.com/macros/s/AKfycbx7an44IrSEscNscoMvkXuhEwh50zluzWCRBJfAWc6czy4uZfZe-i62x1CyLkPIO7J7/exec?category=${encodeURIComponent(data.category)}&weight=${data.weight}&length=${data.length}&width=${data.width}&height=${data.height}&cost=${data.cost}`)
-                .then(response => response.json())
+            const url = `https://script.google.com/macros/s/AKfycbx7an44IrSEscNscoMvkXuhEwh50zluzWCRBJfAWc6czy4uZfZe-i62x1CyLkPIO7J7/exec?category=${encodeURIComponent(data.category)}&weight=${data.weight}&length=${data.length}&width=${data.width}&height=${data.height}&cost=${data.cost}`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Ошибка сети');
+                    }
+                    return response.json();
+                })
                 .then(result => {
                     if (result.error) {
                         alert(result.error); // Если есть ошибка, выводим её
                         return;
                     }
-
                     // Перенаправление на страницу с результатами
                     const encodedResults = encodeURIComponent(JSON.stringify(result));
                     window.location.href = "results.html?results=" + encodedResults;
@@ -143,13 +137,11 @@
                 height: parseFloat(formData.get('height')), // Высота
                 cost: parseFloat(formData.get('cost')) // Стоимость товара
             };
-
             // Проверяем, что все данные указаны
             if (!data.category || isNaN(data.weight) || isNaN(data.length) || isNaN(data.width) || isNaN(data.height) || isNaN(data.cost)) {
                 alert("Пожалуйста, заполните все поля!");
                 return;
             }
-
             // Выполняем расчеты
             calculateCost(data);
         });
