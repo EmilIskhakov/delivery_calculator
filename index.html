@@ -113,13 +113,16 @@
         <!-- Стоимость товара -->
         <label for="cost">Стоимость товара ($):</label>
         <input type="number" id="cost" name="cost" required min="0.01" step="any" tabindex="6" placeholder="Введите стоимость">
+        <!-- Количество коробок -->
+        <label for="quantity">Количество коробок:</label>
+        <input type="number" id="quantity" name="quantity" required min="1" step="1" tabindex="7" placeholder="Введите количество">
         <!-- Кнопка отправки формы -->
-        <input type="submit" value="Рассчитать стоимость" tabindex="7">
+        <input type="submit" value="Рассчитать стоимость" tabindex="8">
     </form>
     <script>
         // Функция для выполнения расчетов
         function calculateCost(data) {
-            const url = `https://script.google.com/macros/s/AKfycbx7an44IrSEscNscoMvkXuhEwh50zluzWCRBJfAWc6czy4uZfZe-i62x1CyLkPIO7J7/exec?category=${encodeURIComponent(data.category)}&weight=${data.weight}&length=${data.length}&width=${data.width}&height=${data.height}&cost=${data.cost}`;
+            const url = `https://script.google.com/macros/s/AKfycbx7an44IrSEscNscoMvkXuhEwh50zluzWCRBJfAWc6czy4uZfZe-i62x1CyLkPIO7J7/exec?category=${encodeURIComponent(data.category)}&weight=${data.weight}&length=${data.length}&width=${data.width}&height=${data.height}&cost=${data.cost}&quantity=${data.quantity}`;
             fetch(url)
                 .then(response => {
                     if (!response.ok) {
@@ -152,9 +155,10 @@
                 length: parseFloat(formData.get('length')),
                 width: parseFloat(formData.get('width')),
                 height: parseFloat(formData.get('height')),
-                cost: parseFloat(formData.get('cost'))
+                cost: parseFloat(formData.get('cost')),
+                quantity: parseInt(formData.get('quantity')) // Добавляем поле "Количество коробок"
             };
-            if (!data.category || isNaN(data.weight) || isNaN(data.length) || isNaN(data.width) || isNaN(data.height) || isNaN(data.cost)) {
+            if (!data.category || isNaN(data.weight) || isNaN(data.length) || isNaN(data.width) || isNaN(data.height) || isNaN(data.cost) || isNaN(data.quantity)) {
                 alert("Пожалуйста, заполните все поля!");
                 return;
             }
