@@ -5,14 +5,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Форма для расчета доставки</title>
     <style>
-        /* Стили остаются без изменений */
+        /* Общие настройки */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh; /* Растягиваем контент на всю высоту экрана */
+        }
+        h1 {
+            color: #E74C3C;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 150px;
+            height: auto;
+        }
+        form {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 20px auto;
+            max-width: 400px;
+            width: 100%;
+            flex-grow: 1; /* Растягиваем форму по высоте */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Распределяем элементы по вертикали */
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: #AA4444;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #E74C3C;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: auto; /* Прижимаем кнопку к нижней части формы */
+        }
+        input[type="submit"]:hover {
+            background-color: #C0392B;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /* Адаптивность */
+        @media (max-width: 600px) {
+            form {
+                padding: 15px;
+            }
+            input, select {
+                padding: 10px;
+                font-size: 14px;
+            }
+            input[type="submit"] {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Логотип -->
     <img src="https://raw.githubusercontent.com/EmilIskhakov/china-together-logo/main/photo_2024-05-27_15-00-14%20(2).jpg" alt="China Together" class="logo">
     <h1>Расчет стоимости доставки</h1>
-    <form id="deliveryForm" style="flex-grow: 1;">
+    <form id="deliveryForm" style="flex-grow: 1;"> <!-- Растягиваем форму -->
         <!-- Категория товара -->
         <label for="category">Категория товара:</label>
         <select id="category" name="category" tabindex="1">
@@ -44,7 +127,7 @@
     <script>
         // Функция для выполнения расчетов
         function calculateCost(data) {
-            const url = `https://script.google.com/macros/s/AKfycbxNkWYqnvo6MK685Q1qIPyYNew13470wrArcNadzK9gt3u_7Kk2Sk0Mcd6rHAEJ0m9Yqw/exec?category=${encodeURIComponent(data.category)}&weight=${data.weight}&length=${data.length}&width=${data.width}&height=${data.height}&cost=${data.cost}&quantity=${data.quantity}`;
+            const url = `https://script.google.com/macros/s/AKfycbzq8pTr-vYI2Vft3-4tT_N0weVN-ntBZb-FrY-AZW6Y4ElXaG8TK9fgrIj4H4ERxFK3jQ/exec?category=${encodeURIComponent(data.category)}&weight=${data.weight}&length=${data.length}&width=${data.width}&height=${data.height}&cost=${data.cost}&quantity=${data.quantity}`;
             fetch(url)
                 .then(response => {
                     if (!response.ok) {
@@ -58,7 +141,6 @@
                         return;
                     }
                     // Перенаправление на страницу с результатами
-                    // Используем более надежный метод для кодирования JSON
                     const encodedResults = encodeURIComponent(JSON.stringify(result));
                     window.location.href = "results.html?results=" + encodedResults;
                 })
