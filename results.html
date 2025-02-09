@@ -1,89 +1,147 @@
-<script>
-    // Функция для форматирования чисел
-    function formatNumber(value) {
-        return value != null && typeof value === 'number' ? value.toFixed(2) : 'N/A';
-    }
-
-    // Функция для создания таблицы с результатами
-    function createResultsTable(data) {
-        const resultsDiv = document.getElementById('results');
-        resultsDiv.innerHTML = ''; // Очищаем предыдущие результаты
-
-        const packagingTypes = ["Мешок", "Картонные уголки", "Деревянный каркас"];
-        packagingTypes.forEach(type => {
-            const resultData = data[type.toLowerCase()];
-            if (!resultData) return;
-
-            const table = document.createElement('table');
-
-            // Заголовок таблицы
-            const caption = document.createElement('caption');
-            caption.textContent = `${type} | Быстрое авто | Обычное авто`;
-            table.appendChild(caption);
-
-            // Создание заголовков
-            const headerRow = document.createElement('tr');
-            const headerCell = document.createElement('th');
-            headerCell.textContent = "";
-            headerRow.appendChild(headerCell);
-            const fastHeader = document.createElement('th');
-            fastHeader.textContent = "Быстрое";
-            headerRow.appendChild(fastHeader);
-            const regularHeader = document.createElement('th');
-            regularHeader.textContent = "Обычное";
-            headerRow.appendChild(regularHeader);
-            table.appendChild(headerRow);
-
-            // Строки таблицы
-            const rows = [
-                { label: "Вес с упаковкой", fast: resultData.packedWeight, regular: resultData.packedWeight },
-                { label: "Стоимость доставки", fast: resultData.fastAutoCost, regular: resultData.regularAutoCost },
-                { label: "Упаковка", fast: resultData.packagingCost, regular: resultData.packagingCost },
-                { label: "Разгрузочные работы", fast: resultData.unloadCost, regular: resultData.unloadCost },
-                { label: "Страховка", fast: resultData.insurance, regular: resultData.insurance },
-                { label: "Итого", fast: resultData.totalFast, regular: resultData.totalRegular }
-            ];
-
-            // Создание строк
-            rows.forEach(row => {
-                const rowElement = document.createElement('tr');
-                const labelCell = document.createElement('td');
-                labelCell.textContent = row.label;
-                rowElement.appendChild(labelCell);
-
-                const fastCell = document.createElement('td');
-                fastCell.textContent = `$${formatNumber(row.fast)}`;
-                rowElement.appendChild(fastCell);
-
-                const regularCell = document.createElement('td');
-                regularCell.textContent = `$${formatNumber(row.regular)}`;
-                rowElement.appendChild(regularCell);
-
-                table.appendChild(rowElement);
-            });
-
-            resultsDiv.appendChild(table);
-        });
-    }
-
-    // Проверяем наличие данных в URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const resultsParam = urlParams.get('results');
-
-    if (!resultsParam) {
-        alert("Ошибка: данные не найдены!");
-        return;
-    }
-
-    try {
-        const results = JSON.parse(decodeURIComponent(resultsParam));
-        if (!results || typeof results !== 'object') {
-            alert("Ошибка: некорректные данные!");
-            return;
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результат расчета доставки</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
         }
-        createResultsTable(results);
-    } catch (error) {
-        console.error('Ошибка при парсинге данных:', error);
-        alert("Произошла ошибка при обработке результатов!");
-    }
-</script>
+        h1 {
+            color: #333;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .section h2 {
+            margin-top: 0;
+            color: #555;
+        }
+        .section p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Результат расчета доставки</h1>
+
+    <!-- Общая информация -->
+    <div class="section" id="generalInfo">
+        <h2>Общая информация</h2>
+        <p><strong>Вес:</strong> <span id="weight">0</span> кг</p>
+        <p><strong>Плотность:</strong> <span id="density">NaN</span></p>
+        <p><strong>Стоимость товара:</strong> $<span id="productCost">0</span></p>
+    </div>
+
+    <!-- Мешок -->
+    <div class="section" id="bagInfo">
+        <h2>Мешок</h2>
+        <p><strong>Вес с упаковкой:</strong> <span id="bagWeight">0</span> кг</p>
+        <p><strong>Стоимость упаковки:</strong> $<span id="bagPackagingCost">0</span></p>
+        <p><strong>Стоимость разгрузки:</strong> $<span id="bagUnloadCost">0</span></p>
+        <p><strong>Страховка:</strong> $<span id="bagInsurance">0</span></p>
+        <p><strong>Итого (быстрое авто):</strong> $<span id="bagTotalFast">0</span></p>
+        <p><strong>Итого (обычное авто):</strong> $<span id="bagTotalRegular">0</span></p>
+    </div>
+
+    <!-- Картонные уголки -->
+    <div class="section" id="cornersInfo">
+        <h2>Картонные уголки</h2>
+        <p><strong>Вес с упаковкой:</strong> <span id="cornersWeight">0</span> кг</p>
+        <p><strong>Стоимость упаковки:</strong> $<span id="cornersPackagingCost">0</span></p>
+        <p><strong>Стоимость разгрузки:</strong> $<span id="cornersUnloadCost">0</span></p>
+        <p><strong>Страховка:</strong> $<span id="cornersInsurance">0</span></p>
+        <p><strong>Итого (быстрое авто):</strong> $<span id="cornersTotalFast">0</span></p>
+        <p><strong>Итого (обычное авто):</strong> $<span id="cornersTotalRegular">0</span></p>
+    </div>
+
+    <!-- Деревянный каркас -->
+    <div class="section" id="frameInfo">
+        <h2>Деревянный каркас</h2>
+        <p><strong>Вес с упаковкой:</strong> <span id="frameWeight">0</span> кг</p>
+        <p><strong>Стоимость упаковки:</strong> $<span id="framePackagingCost">0</span></p>
+        <p><strong>Стоимость разгрузки:</strong> $<span id="frameUnloadCost">0</span></p>
+        <p><strong>Страховка:</strong> $<span id="frameInsurance">0</span></p>
+        <p><strong>Итого (быстрое авто):</strong> $<span id="frameTotalFast">0</span></p>
+        <p><strong>Итого (обычное авто):</strong> $<span id="frameTotalRegular">0</span></p>
+    </div>
+
+    <script>
+        // Пример JSON-данных (замените на данные из Google Sheets)
+        const jsonData = {
+            "общаяИнформация": {
+                "вес": 10,
+                "плотность": "0.5",
+                "стоимостьТовара": 100
+            },
+            "мешок": {
+                "packedWeight": 1.3,
+                "packagingCost": 3,
+                "unloadCost": 4,
+                "insurance": 0,
+                "totalFast": "7.00",
+                "totalRegular": "7.00"
+            },
+            "углы": {
+                "packedWeight": 2,
+                "packagingCost": 8,
+                "unloadCost": 4,
+                "insurance": 0,
+                "totalFast": "12.00",
+                "totalRegular": "12.00"
+            },
+            "каркас": {
+                "packedWeight": 2,
+                "packagingCost": 15,
+                "unloadCost": 4,
+                "insurance": 0,
+                "totalFast": "19.00",
+                "totalRegular": "19.00"
+            }
+        };
+
+        // Функция для заполнения данных
+        function fillData(data) {
+            // Общая информация
+            document.getElementById('weight').textContent = data.общаяИнформация.вес;
+            document.getElementById('density').textContent = data.общаяИнформация.плотность;
+            document.getElementById('productCost').textContent = data.общаяИнформация.стоимостьТовара;
+
+            // Мешок
+            document.getElementById('bagWeight').textContent = data.мешок.packedWeight;
+            document.getElementById('bagPackagingCost').textContent = data.мешок.packagingCost;
+            document.getElementById('bagUnloadCost').textContent = data.мешок.unloadCost;
+            document.getElementById('bagInsurance').textContent = data.мешок.insurance;
+            document.getElementById('bagTotalFast').textContent = data.мешок.totalFast;
+            document.getElementById('bagTotalRegular').textContent = data.мешок.totalRegular;
+
+            // Картонные уголки
+            document.getElementById('cornersWeight').textContent = data.углы.packedWeight;
+            document.getElementById('cornersPackagingCost').textContent = data.углы.packagingCost;
+            document.getElementById('cornersUnloadCost').textContent = data.углы.unloadCost;
+            document.getElementById('cornersInsurance').textContent = data.углы.insurance;
+            document.getElementById('cornersTotalFast').textContent = data.углы.totalFast;
+            document.getElementById('cornersTotalRegular').textContent = data.углы.totalRegular;
+
+            // Деревянный каркас
+            document.getElementById('frameWeight').textContent = data.каркас.packedWeight;
+            document.getElementById('framePackagingCost').textContent = data.каркас.packagingCost;
+            document.getElementById('frameUnloadCost').textContent = data.каркас.unloadCost;
+            document.getElementById('frameInsurance').textContent = data.каркас.insurance;
+            document.getElementById('frameTotalFast').textContent = data.каркас.totalFast;
+            document.getElementById('frameTotalRegular').textContent = data.каркас.totalRegular;
+        }
+
+        // Заполняем данные при загрузке страницы
+        fillData(jsonData);
+    </script>
+</body>
+</html>
