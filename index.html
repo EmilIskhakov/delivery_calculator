@@ -1,6 +1,6 @@
 // Функция для выполнения расчетов
 function calculateCost(data) {
-    fetch(`https://script.google.com/macros/s/AKfycby0dHJF-MI8zMIEOR-m1jbXzPXe3AOMlVrHvcgBmis8NihXga9F182ki1kDxyDzs27FXg/exec?category=${data.category}&weight=${data.weight}&length=${data.length}&width=${data.width}&height=${data.height}&cost=${data.cost}`)
+    fetch(`https://script.google.com/macros/s/AKfycby1NEio4cVx7argk_TBTKLodEaQ_oiTQYOwDneEIktInBOBFkSARSefaRHsrE7ZSZockg/exec?category=${data.category}&weight=${data.weight}&length=${data.length}&width=${data.width}&height=${data.height}&cost=${data.cost}`)
         .then(response => response.json())
         .then(result => {
             if (!result) {
