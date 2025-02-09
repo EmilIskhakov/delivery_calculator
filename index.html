@@ -124,61 +124,41 @@
         <!-- Кнопка отправки формы -->
         <input type="submit" value="Рассчитать стоимость" tabindex="8">
     </form>
-    <script>
-        // Функция для выполнения расчетов
-        function calculateCost(data) {
-            const url = `https://script.google.com/macros/s/AKfycbzq8pTr-vYI2Vft3-4tT_N0weVN-ntBZb-FrY-AZW6Y4ElXaG8TK9fgrIj4H4ERxFK3jQ/exec?category=${encodeURIComponent(data.category)}&weight=${data.weight}&length=${data.length}&width=${data.width}&height=${data.height}&cost=${data.cost}&quantity=${data.quantity}`;
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Ошибка сети');
-                    }
-                    return response.json();
-                })
-                .then(result => {
-                    if (result.error) {
-                        alert(result.error); // Если есть ошибка, выводим её
-                        return;
-                    }
-                    // Перенаправление на страницу с результатами
-                    const encodedResults = encodeURIComponent(JSON.stringify(result));
-                    window.location.href = "results.html?results=" + encodedResults;
-                })
-                .catch(error => {
-                    console.error('Ошибка при получении данных:', error);
-                    alert('Произошла ошибка при расчете!');
-                });
+<script>
+  function getResults() {
+    // Получаем данные с параметрами
+    const category = document.getElementById("category").value;
+    const weight = parseFloat(document.getElementById("weight").value);
+    const length = parseFloat(document.getElementById("length").value);
+    const width = parseFloat(document.getElementById("width").value);
+    const height = parseFloat(document.getElementById("height").value);
+    const cost = parseFloat(document.getElementById("cost").value);
+    const quantity = parseInt(document.getElementById("quantity").value);
+
+    // Строим URL для запроса
+    const url = `https://script.google.com/macros/s/AKfycbxLTBWuURjAOL0VjimXtfa2t3gXI8tpJ7M2Z32twI9dvVzyj1_WWRetRrGyZt6OocnHaA/exec?category=${category}&weight=${weight}&length=${length}&width=${width}&height=${height}&cost=${cost}&quantity=${quantity}`;
+
+    // Делаем запрос
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          alert(data.error);
+        } else {
+          // Обрабатываем результаты
+          displayResults(data);
         }
+      });
+  }
 
-        // Обработка отправки формы
-        document.getElementById('deliveryForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const formData = new FormData(this);
-            const data = {
-                category: formData.get('category'),
-                weight: parseFloat(formData.get('weight')),
-                length: parseFloat(formData.get('length')),
-                width: parseFloat(formData.get('width')),
-                height: parseFloat(formData.get('height')),
-                cost: parseFloat(formData.get('cost')),
-                quantity: parseInt(formData.get('quantity')) // Количество коробок
-            };
-            if (!data.category || isNaN(data.weight) || isNaN(data.length) || isNaN(data.width) || isNaN(data.height) || isNaN(data.cost) || isNaN(data.quantity)) {
-                alert("Пожалуйста, заполните все поля!");
-                return;
-            }
-            calculateCost(data);
-        });
-
-        // Закрытие клавиатуры при клике вне полей ввода
-        document.addEventListener('click', function(event) {
-            const inputs = document.querySelectorAll('input, select');
-            inputs.forEach(input => {
-                if (!input.contains(event.target)) {
-                    input.blur(); // Убираем фокус с элемента ввода
-                }
-            });
-        });
-    </script>
+  function displayResults(data) {
+    // Используем новые английские ключи для отображения
+    document.getElementById("resultCategory").textContent = data.generalInformation.category;
+    document.getElementById("resultWeight").textContent = data.generalInformation.weight;
+    document.getElementById("resultDensity").textContent = data.generalInformation.density;
+    document.getElementById("resultInsurance").textContent = data.generalInformation.insuranceAmount;
+    // И так далее для всех данных
+  }
+</script>
 </body>
 </html>
