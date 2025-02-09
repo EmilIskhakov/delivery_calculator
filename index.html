@@ -15,7 +15,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh; /* Растягиваем контент на всю высоту экрана */
+            min-height: 100vh;
         }
         h1 {
             color: #E74C3C;
@@ -36,10 +36,10 @@
             margin: 0 auto 20px auto;
             max-width: 400px;
             width: 100%;
-            flex-grow: 1; /* Растягиваем форму по высоте */
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Распределяем элементы по вертикали */
+            justify-content: space-between;
         }
         label {
             font-weight: bold;
@@ -65,7 +65,7 @@
             border-radius: 4px;
             cursor: pointer;
             width: 100%;
-            margin-top: auto; /* Прижимаем кнопку к нижней части формы */
+            margin-top: auto;
         }
         input[type="submit"]:hover {
             background-color: #C0392B;
@@ -95,7 +95,7 @@
     <!-- Логотип -->
     <img src="https://raw.githubusercontent.com/EmilIskhakov/china-together-logo/main/photo_2024-05-27_15-00-14%20(2).jpg" alt="China Together" class="logo">
     <h1>Расчет стоимости доставки</h1>
-    <form id="deliveryForm" style="flex-grow: 1;"> <!-- Растягиваем форму -->
+    <form id="deliveryForm" style="flex-grow: 1;">
         <!-- Категория товара -->
         <label for="category">Категория товара:</label>
         <select id="category" name="category" tabindex="1">
@@ -124,41 +124,38 @@
         <!-- Кнопка отправки формы -->
         <input type="submit" value="Рассчитать стоимость" tabindex="8">
     </form>
-<script>
-  function getResults() {
-    // Получаем данные с параметрами
-    const category = document.getElementById("category").value;
-    const weight = parseFloat(document.getElementById("weight").value);
-    const length = parseFloat(document.getElementById("length").value);
-    const width = parseFloat(document.getElementById("width").value);
-    const height = parseFloat(document.getElementById("height").value);
-    const cost = parseFloat(document.getElementById("cost").value);
-    const quantity = parseInt(document.getElementById("quantity").value);
+    <script>
+        document.getElementById("deliveryForm").addEventListener("submit", function (event) {
+            event.preventDefault();
 
-    // Строим URL для запроса
-    const url = `https://script.google.com/macros/s/AKfycbxLTBWuURjAOL0VjimXtfa2t3gXI8tpJ7M2Z32twI9dvVzyj1_WWRetRrGyZt6OocnHaA/exec?category=${category}&weight=${weight}&length=${length}&width=${width}&height=${height}&cost=${cost}&quantity=${quantity}`;
+            // Получаем данные с параметрами
+            const category = document.getElementById("category").value;
+            const weight = parseFloat(document.getElementById("weight").value);
+            const length = parseFloat(document.getElementById("length").value);
+            const width = parseFloat(document.getElementById("width").value);
+            const height = parseFloat(document.getElementById("height").value);
+            const cost = parseFloat(document.getElementById("cost").value);
+            const quantity = parseInt(document.getElementById("quantity").value);
 
-    // Делаем запрос
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        if (data.error) {
-          alert(data.error);
-        } else {
-          // Обрабатываем результаты
-          displayResults(data);
-        }
-      });
-  }
+            // Строим URL для запроса
+            const url = `https://script.google.com/macros/s/AKfycbxLTBWuURjAOL0VjimXtfa2t3gXI8tpJ7M2Z32twI9dvVzyj1_WWRetRrGyZt6OocnHaA/exec?category=${encodeURIComponent(category)}&weight=${weight}&length=${length}&width=${width}&height=${height}&cost=${cost}&quantity=${quantity}`;
 
-  function displayResults(data) {
-    // Используем новые английские ключи для отображения
-    document.getElementById("resultCategory").textContent = data.generalInformation.category;
-    document.getElementById("resultWeight").textContent = data.generalInformation.weight;
-    document.getElementById("resultDensity").textContent = data.generalInformation.density;
-    document.getElementById("resultInsurance").textContent = data.generalInformation.insuranceAmount;
-    // И так далее для всех данных
-  }
-</script>
+            // Делаем запрос
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        // Кодируем результаты в URL-safe формат и переходим на страницу с результатами
+                        const encodedResults = encodeURIComponent(JSON.stringify(data));
+                        window.location.href = "result.html?results=" + encodedResults;
+                    }
+                })
+                .catch(error => {
+                    alert("Ошибка при выполнении запроса: " + error.message);
+                });
+        });
+    </script>
 </body>
 </html>
