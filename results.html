@@ -36,6 +36,23 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .button {
+            background-color: #E74C3C;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #C0392B;
+        }
     </style>
 </head>
 <body>
@@ -46,6 +63,8 @@
         <p><strong>Вес товара:</strong> <span id="weight">0</span> кг</p>
         <p><strong>Плотность:</strong> <span id="density">0</span></p>
         <p><strong>Стоимость товара:</strong> $<span id="productCost">0</span></p>
+        <p><strong>Страховка (%):</strong> <span id="insuranceRate">0</span></p>
+        <p><strong>Страховка (сумма):</strong> $<span id="insuranceAmount">0</span></p>
     </div>
     <!-- Мешок -->
     <div class="section">
@@ -152,6 +171,11 @@
             </tbody>
         </table>
     </div>
+    <!-- Кнопки действий -->
+    <div class="button-container">
+        <button class="button" onclick="goBack()">Вернуться на предыдущую страницу</button>
+        <button class="button" onclick="saveCalculation()">Сохранить расчет</button>
+    </div>
 
     <script>
         // Функция для получения данных из URL
@@ -179,11 +203,12 @@
                 alert("Ошибка: некорректные данные!");
                 return;
             }
-
             // Общая информация
             document.getElementById('weight').textContent = data.общаяИнформация?.вес || 0;
             document.getElementById('density').textContent = data.общаяИнформация?.плотность || 0;
             document.getElementById('productCost').textContent = data.общаяИнформация?.стоимостьТовара || 0;
+            document.getElementById('insuranceRate').textContent = data.общаяИнформация?.страховкаПроцент || 0;
+            document.getElementById('insuranceAmount').textContent = parseFloat(data.общаяИнформация?.страховкаСумма || 0).toFixed(2);
 
             // Мешок
             document.getElementById('bagWeightFast').textContent = data.мешок?.packedWeight || 0;
@@ -214,6 +239,29 @@
             document.getElementById('frameUnloadRegular').textContent = data.каркас?.unloadCost || 0;
             document.getElementById('frameTotalFast').textContent = `$${parseFloat(data.каркас?.totalFast || 0).toFixed(2)}`;
             document.getElementById('frameTotalRegular').textContent = `$${parseFloat(data.каркас?.totalRegular || 0).toFixed(2)}`;
+        }
+
+        // Функция для возврата на предыдущую страницу
+        function goBack() {
+            window.history.back();
+        }
+
+        // Функция для сохранения расчета
+        function saveCalculation() {
+            const jsonData = getResultsFromUrl();
+            if (jsonData) {
+                const jsonString = JSON.stringify(jsonData);
+                const blob = new Blob([jsonString], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'calculation_results.json';
+                a.click();
+                URL.revokeObjectURL(url);
+                alert("Расчет успешно сохранен!");
+            } else {
+                alert("Ошибка: данные не найдены!");
+            }
         }
 
         // Получаем и заполняем данные
