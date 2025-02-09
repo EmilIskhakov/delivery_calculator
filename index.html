@@ -113,7 +113,7 @@
     <script>
         // Функция для выполнения расчетов
         function calculateCost(data) {
-            fetch(`https://script.google.com/macros/s/AKfycbzqZhKBDY_LItrjFNcRQKMtpk1He8cwe66roePm7bbmx3vXY2to4q3nwCkeS-YxKnv4VA/exec?category=${data.category}&weight=${data.weight}&length=${data.length}&width=${data.width}&height=${data.height}&cost=${data.cost}`)
+            fetch(`https://script.google.com/macros/s/AKfycbyzu_Ob7qzjfvLTTyLnHI8DycMuf_c8qBNgg0ic-ohyTSfNNpKkFtP0SuB_DedzkCQtWQ/exec?category=${data.category}&weight=${data.weight}&length=${data.length}&width=${data.width}&height=${data.height}&cost=${data.cost}`)
                 .then(response => response.json())
                 .then(result => {
                     if (!result) {
