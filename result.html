@@ -83,12 +83,16 @@
 
         if (!resultsParam) {
             alert("Данные не найдены!");
-            window.location.href = "index.html"; // Возвращаемся на главную страницу
+            window.location.href = "/delivery_calculator/index.html"; // Возвращаемся на главную страницу
         }
 
         try {
             // Декодируем JSON-строку
             const results = JSON.parse(decodeURIComponent(resultsParam));
+
+            if (!results || !results.generalInformation) {
+                throw new Error("Некорректные данные");
+            }
 
             // Заполняем основную информацию
             document.getElementById("weight").textContent = results.generalInformation.weight.toFixed(2);
@@ -119,9 +123,9 @@
 
                 // Строки данных
                 const rows = [
-                    { label: "Вес с упаковкой", value1: data.packedWeight, value2: data.packedWeight },
+                    { label: "Вес с упаковкой", value1: parseFloat(data.packedWeight), value2: parseFloat(data.packedWeight) },
                     { label: "Стоимость упаковки", value1: data.packagingCost, value2: data.packagingCost },
-                    { label: "Стоимость доставки", value1: data.deliveryCostRegular, value2: data.deliveryCostFast },
+                    { label: "Стоимость доставки", value1: parseFloat(data.deliveryCostRegular), value2: parseFloat(data.deliveryCostFast) },
                     { label: "Стоимость разгрузочных работ", value1: data.unloadCost, value2: data.unloadCost },
                     { label: "Стоимость страховки", value1: data.insurance, value2: data.insurance }
                 ];
@@ -138,7 +142,7 @@
 
                 // Итоговая строка
                 const footerRow = table.createTFOOT().insertRow();
-                const footerCells = ["Итого сумма всех стоимостей выше", data.totalRegular, data.totalFast];
+                const footerCells = ["Итого сумма всех стоимостей выше", parseFloat(data.totalRegular), parseFloat(data.totalFast)];
                 footerCells.forEach(cellText => {
                     const cell = document.createElement("td");
                     cell.textContent = typeof cellText === "number" ? cellText.toFixed(2) : cellText;
