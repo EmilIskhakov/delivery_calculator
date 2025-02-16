@@ -54,8 +54,8 @@
         th {
             background-color: #f4f4f4;
         }
-        tfoot td {
-            font-weight: bold;
+        tr.footer-row td {
+            font-weight: bold; /* Жирный шрифт для итоговой строки */
         }
     </style>
 </head>
@@ -137,16 +137,16 @@
                     });
                 });
 
-                // Итоговая строка (исправленный код)
-                const footer = document.createElement("tfoot"); // Создаем <tfoot> вручную
-                const footerRow = footer.insertRow();
+                // Итоговая строка (добавляем как обычную строку)
+                const footerRow = table.insertRow();
+                footerRow.classList.add("footer-row"); // Добавляем класс для стилизации
                 const footerCells = ["Итого сумма всех стоимостей выше", parseFloat(data.totalRegular), parseFloat(data.totalFast)];
                 footerCells.forEach(cellText => {
                     const cell = document.createElement("td");
                     cell.textContent = typeof cellText === "number" ? cellText.toFixed(2) : cellText;
+                    cell.style.fontWeight = "bold"; // Делаем текст жирным
                     footerRow.appendChild(cell);
                 });
-                table.appendChild(footer); // Добавляем <tfoot> в таблицу
 
                 section.appendChild(table);
                 return section;
