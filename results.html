@@ -1,147 +1,167 @@
-<!DOCTYPE html> 
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculation Results</title>
+    <title>Результаты расчета доставки</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 10px;
-            background-color: #f4f4f4;
-        }
-        .result-container {
-            background-color: white;
-            border-radius: 8px;
+            margin: 0;
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
+            background-color: #f9f9f9;
             color: #333;
         }
-        p {
+        h1 {
+            color: #E74C3C;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .summary {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .summary p {
+            margin: 5px 0;
             font-size: 16px;
         }
-        .result-container p {
+        .packaging {
+            margin-bottom: 20px;
+        }
+        .packaging h2 {
+            color: #AA4444;
             margin-bottom: 10px;
         }
-        .back-button {
-            display: block;
-            margin-top: 20px;
-            text-decoration: none;
-            color: #E74C3C;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        tfoot td {
             font-weight: bold;
-            font-size: 16px;
         }
     </style>
 </head>
 <body>
-    <div class="result-container">
-        <h1>Calculation Results</h1>
+    <h1>Результаты расчета стоимости доставки</h1>
+    <div class="container">
+        <!-- Верхний блок с основной информацией -->
+        <div class="summary">
+            <h2>Основная информация:</h2>
+            <p><strong>Вес товара:</strong> <span id="weight"></span> кг</p>
+            <p><strong>Объем:</strong> <span id="volume"></span> м³</p>
+            <p><strong>Плотность:</strong> <span id="density"></span> кг/м³</p>
+            <p><strong>Стоимость товара:</strong> <span id="cost"></span> $</p>
+            <p><strong>Количество упаковок:</strong> <span id="quantity"></span></p>
+        </div>
 
-        <!-- General Information -->
-        <div>
-            <h3>General Information</h3>
-            <p><strong>Category:</strong> <span id="resultCategory"></span></p>
-            <p><strong>Total Weight (kg):</strong> <span id="resultWeight"></span></p>
-            <p><strong>Density:</strong> <span id="resultDensity"></span></p>
-            <p><strong>Product Cost:</strong> <span id="resultProductCost"></span></p>
-            <p><strong>Insurance Rate:</strong> <span id="resultInsuranceRate"></span></p>
-            <p><strong>Insurance Amount:</strong> <span id="resultInsuranceAmount"></span></p>
-            <p><strong>Total Volume (m³):</strong> <span id="resultVolume"></span></p>
-            <p><strong>Box Count:</strong> <span id="resultBoxCount"></span></p>
-        </div>
-        <hr>
-        <!-- Bag Details -->
-        <div>
-            <h3>Bag Packaging</h3>
-            <p><strong>Packed Weight (kg):</strong> <span id="resultBagPackedWeight"></span></p>
-            <p><strong>Packaging Cost:</strong> <span id="resultBagPackagingCost"></span></p>
-            <p><strong>Unload Cost:</strong> <span id="resultBagUnloadCost"></span></p>
-            <p><strong>Insurance:</strong> <span id="resultBagInsurance"></span></p>
-            <p><strong>Total (Fast Shipping):</strong> <span id="resultBagTotalFast"></span></p>
-            <p><strong>Total (Regular Shipping):</strong> <span id="resultBagTotalRegular"></span></p>
-        </div>
-        <hr>
-        <!-- Corners Details -->
-        <div>
-            <h3>Corners Packaging</h3>
-            <p><strong>Packed Weight (kg):</strong> <span id="resultCornersPackedWeight"></span></p>
-            <p><strong>Packaging Cost:</strong> <span id="resultCornersPackagingCost"></span></p>
-            <p><strong>Unload Cost:</strong> <span id="resultCornersUnloadCost"></span></p>
-            <p><strong>Insurance:</strong> <span id="resultCornersInsurance"></span></p>
-            <p><strong>Total (Fast Shipping):</strong> <span id="resultCornersTotalFast"></span></p>
-            <p><strong>Total (Regular Shipping):</strong> <span id="resultCornersTotalRegular"></span></p>
-        </div>
-        <hr>
-        <!-- Frame Details -->
-        <div>
-            <h3>Frame Packaging</h3>
-            <p><strong>Packed Weight (kg):</strong> <span id="resultFramePackedWeight"></span></p>
-            <p><strong>Packaging Cost:</strong> <span id="resultFramePackagingCost"></span></p>
-            <p><strong>Unload Cost:</strong> <span id="resultFrameUnloadCost"></span></p>
-            <p><strong>Insurance:</strong> <span id="resultFrameInsurance"></span></p>
-            <p><strong>Total (Fast Shipping):</strong> <span id="resultFrameTotalFast"></span></p>
-            <p><strong>Total (Regular Shipping):</strong> <span id="resultFrameTotalRegular"></span></p>
-        </div>
+        <!-- Блоки с упаковками -->
+        <div id="packaging-section"></div>
     </div>
-    <a href="index.html" class="back-button">← Вернуться к расчету</a>
+
     <script>
-        function fetchResults() {
-            // Получаем данные из URL-параметра
-            const urlParams = new URLSearchParams(window.location.search);
-            const resultsParam = urlParams.get('results');
-
-            if (!resultsParam) {
-                alert("Результаты не найдены.");
-                return;
-            }
-
-            try {
-                // Расшифровываем JSON-строку
-                const data = JSON.parse(decodeURIComponent(resultsParam));
-
-                // Отображаем данные
-                document.getElementById('resultCategory').textContent = data.generalInformation.category;
-                document.getElementById('resultWeight').textContent = data.generalInformation.weight;
-                document.getElementById('resultDensity').textContent = data.generalInformation.density;
-                document.getElementById('resultProductCost').textContent = data.generalInformation.productCost;
-                document.getElementById('resultInsuranceRate').textContent = data.generalInformation.insuranceRate;
-                document.getElementById('resultInsuranceAmount').textContent = data.generalInformation.insuranceAmount;
-                document.getElementById('resultVolume').textContent = data.generalInformation.volume;
-                document.getElementById('resultBoxCount').textContent = data.generalInformation.boxCount;
-
-                // Bag results
-                document.getElementById('resultBagPackedWeight').textContent = data.bag.packedWeight;
-                document.getElementById('resultBagPackagingCost').textContent = data.bag.packagingCost;
-                document.getElementById('resultBagUnloadCost').textContent = data.bag.unloadCost;
-                document.getElementById('resultBagInsurance').textContent = data.bag.insurance;
-                document.getElementById('resultBagTotalFast').textContent = data.bag.totalFast;
-                document.getElementById('resultBagTotalRegular').textContent = data.bag.totalRegular;
-
-                // Corners results
-                document.getElementById('resultCornersPackedWeight').textContent = data.corners.packedWeight;
-                document.getElementById('resultCornersPackagingCost').textContent = data.corners.packagingCost;
-                document.getElementById('resultCornersUnloadCost').textContent = data.corners.unloadCost;
-                document.getElementById('resultCornersInsurance').textContent = data.corners.insurance;
-                document.getElementById('resultCornersTotalFast').textContent = data.corners.totalFast;
-                document.getElementById('resultCornersTotalRegular').textContent = data.corners.totalRegular;
-
-                // Frame results
-                document.getElementById('resultFramePackedWeight').textContent = data.frame.packedWeight;
-                document.getElementById('resultFramePackagingCost').textContent = data.frame.packagingCost;
-                document.getElementById('resultFrameUnloadCost').textContent = data.frame.unloadCost;
-                document.getElementById('resultFrameInsurance').textContent = data.frame.insurance;
-                document.getElementById('resultFrameTotalFast').textContent = data.frame.totalFast;
-                document.getElementById('resultFrameTotalRegular').textContent = data.frame.totalRegular;
-            } catch (error) {
-                alert("Ошибка при обработке результатов: " + error.message);
-            }
+        // Получаем данные из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const resultsParam = urlParams.get('results');
+        if (!resultsParam) {
+            alert("Данные не найдены!");
+            window.location.href = "index.html";
         }
 
-        // Запуск функции при загрузке страницы
-        window.onload = fetchResults;
+        // Декодируем JSON-строку
+        const results = JSON.parse(decodeURIComponent(resultsParam));
+
+        // Заполняем основную информацию
+        document.getElementById("weight").textContent = results.generalInformation.weight.toFixed(2);
+        document.getElementById("volume").textContent = results.generalInformation.volume;
+        document.getElementById("density").textContent = results.generalInformation.density;
+        document.getElementById("cost").textContent = results.generalInformation.productCost;
+        document.getElementById("quantity").textContent = results.generalInformation.boxCount;
+
+        // Функция для создания таблицы упаковки
+        function createPackagingTable(packagingType, data) {
+            const section = document.createElement("div");
+            section.classList.add("packaging");
+
+            const title = document.createElement("h2");
+            title.textContent = packagingType;
+            section.appendChild(title);
+
+            const table = document.createElement("table");
+
+            // Заголовки таблицы
+            const headerRow = table.insertRow();
+            const headers = ["Показатель", "Обычная доставка", "Быстрая доставка"];
+            headers.forEach(headerText => {
+                const th = document.createElement("th");
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+            });
+
+            // Строки данных
+            const rows = [
+                { label: "Вес с упаковкой", value1: data.packedWeight, value2: data.packedWeight },
+                { label: "Стоимость упаковки", value1: data.packagingCost, value2: data.packagingCost },
+                { label: "Стоимость доставки", value1: data.deliveryCostRegular, value2: data.deliveryCostFast },
+                { label: "Стоимость разгрузочных работ", value1: data.unloadCost, value2: data.unloadCost },
+                { label: "Стоимость страховки", value1: data.insurance, value2: data.insurance }
+            ];
+
+            rows.forEach(rowData => {
+                const row = table.insertRow();
+                const cells = [rowData.label, rowData.value1, rowData.value2];
+                cells.forEach(cellText => {
+                    const cell = document.createElement("td");
+                    cell.textContent = typeof cellText === "number" ? cellText.toFixed(2) : cellText;
+                    row.appendChild(cell);
+                });
+            });
+
+            // Итоговая строка
+            const footerRow = table.createTFOOT().insertRow();
+            const footerCells = ["Итого сумма всех стоимостей выше", data.totalRegular, data.totalFast];
+            footerCells.forEach(cellText => {
+                const cell = document.createElement("td");
+                cell.textContent = typeof cellText === "number" ? cellText.toFixed(2) : cellText;
+                footerRow.appendChild(cell);
+            });
+
+            section.appendChild(table);
+            return section;
+        }
+
+        // Генерация блоков для каждого типа упаковки
+        const packagingSection = document.getElementById("packaging-section");
+        const packagingTypes = {
+            bag: "Мешок",
+            corners: "Картонные уголки",
+            frame: "Деревянный каркас"
+        };
+
+        for (const [key, title] of Object.entries(packagingTypes)) {
+            const packagingData = results[key];
+            if (packagingData) {
+                const table = createPackagingTable(title, packagingData);
+                packagingSection.appendChild(table);
+            }
+        }
     </script>
 </body>
 </html>
