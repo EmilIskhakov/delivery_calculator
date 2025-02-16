@@ -55,7 +55,25 @@
             background-color: #f4f4f4;
         }
         tr.footer-row td {
-            font-weight: bold; /* Жирный шрифт для итоговой строки */
+            font-weight: bold;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #E74C3C;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 48%;
+        }
+        button:hover {
+            background-color: #C0392B;
         }
     </style>
 </head>
@@ -74,6 +92,12 @@
 
         <!-- Блоки с упаковками -->
         <div id="packaging-section"></div>
+
+        <!-- Кнопки -->
+        <div class="button-container">
+            <button id="backButton">Вернуться назад</button>
+            <button id="saveButton">Сохранить расчет</button>
+        </div>
     </div>
 
     <script>
@@ -139,12 +163,12 @@
 
                 // Итоговая строка (добавляем как обычную строку)
                 const footerRow = table.insertRow();
-                footerRow.classList.add("footer-row"); // Добавляем класс для стилизации
+                footerRow.classList.add("footer-row");
                 const footerCells = ["Итого сумма всех стоимостей выше", parseFloat(data.totalRegular), parseFloat(data.totalFast)];
                 footerCells.forEach(cellText => {
                     const cell = document.createElement("td");
                     cell.textContent = typeof cellText === "number" ? cellText.toFixed(2) : cellText;
-                    cell.style.fontWeight = "bold"; // Делаем текст жирным
+                    cell.style.fontWeight = "bold";
                     footerRow.appendChild(cell);
                 });
 
@@ -167,6 +191,20 @@
                     packagingSection.appendChild(table);
                 }
             }
+
+            // Кнопка "Вернуться назад"
+            document.getElementById("backButton").addEventListener("click", function () {
+                window.location.href = "/delivery_calculator/index.html";
+            });
+
+            // Кнопка "Сохранить расчет"
+            document.getElementById("saveButton").addEventListener("click", function () {
+                // Сохраняем результаты в localStorage с уникальным ключом
+                const savedCalculations = JSON.parse(localStorage.getItem("savedCalculations")) || [];
+                savedCalculations.push(results); // Добавляем текущий расчет
+                localStorage.setItem("savedCalculations", JSON.stringify(savedCalculations));
+                alert("Расчет успешно сохранен!");
+            });
         } catch (error) {
             alert("Ошибка при обработке данных: " + error.message);
             console.error("Ошибка:", error);
