@@ -77,42 +77,26 @@
     </div>
 
     <script>
-        // Получаем данные из URL
-       // Получаем данные из URL
-const urlParams = new URLSearchParams(window.location.search);
-const resultsParam = urlParams.get('results');
+        try {
+            // Извлекаем данные из localStorage
+            const resultsParam = localStorage.getItem("calculationResults");
+            if (!resultsParam) {
+                throw new Error("Данные не найдены!");
+            }
 
-if (!resultsParam) {
-    alert("Данные не найдены!");
-    window.location.href = "/delivery_calculator/index.html"; // Возвращаемся на главную страницу
-}
+            // Парсим JSON
+            const results = JSON.parse(resultsParam);
 
-try {
-    // Извлекаем данные из localStorage
-    const resultsParam = localStorage.getItem("calculationResults");
-    if (!resultsParam) {
-        throw new Error("Данные не найдены");
-    }
+            if (!results || !results.generalInformation) {
+                throw new Error("Некорректные данные");
+            }
 
-    // Парсим JSON
-    const results = JSON.parse(resultsParam);
-
-    if (!results || !results.generalInformation) {
-        throw new Error("Некорректные данные");
-    }
-
-    // Заполняем основную информацию
-    document.getElementById("weight").textContent = results.generalInformation.weight.toFixed(2);
-    document.getElementById("volume").textContent = results.generalInformation.volume;
-    document.getElementById("density").textContent = results.generalInformation.density;
-    document.getElementById("cost").textContent = results.generalInformation.productCost;
-    document.getElementById("quantity").textContent = results.generalInformation.boxCount;
-
-    // ... остальной код ...
-} catch (error) {
-    console.error("Ошибка при обработке данных:", error);
-    alert("Ошибка при обработке данных: " + error.message);
-}
+            // Заполняем основную информацию
+            document.getElementById("weight").textContent = results.generalInformation.weight.toFixed(2);
+            document.getElementById("volume").textContent = results.generalInformation.volume;
+            document.getElementById("density").textContent = results.generalInformation.density;
+            document.getElementById("cost").textContent = results.generalInformation.productCost;
+            document.getElementById("quantity").textContent = results.generalInformation.boxCount;
 
             // Функция для создания таблицы упаковки
             function createPackagingTable(packagingType, data) {
@@ -184,6 +168,7 @@ try {
         } catch (error) {
             alert("Ошибка при обработке данных: " + error.message);
             console.error(error);
+            window.location.href = "/delivery_calculator/index.html"; // Возвращаемся на главную страницу
         }
     </script>
 </body>
