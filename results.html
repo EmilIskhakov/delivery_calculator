@@ -71,23 +71,19 @@
             <p><strong>Стоимость товара:</strong> <span id="cost"></span> $</p>
             <p><strong>Количество упаковок:</strong> <span id="quantity"></span></p>
         </div>
-
         <!-- Блоки с упаковками -->
         <div id="packaging-section"></div>
     </div>
-
     <script>
         // Получаем данные из URL
         const urlParams = new URLSearchParams(window.location.search);
         const resultsParam = urlParams.get('results');
         if (!resultsParam) {
             alert("Данные не найдены!");
-            window.location.href = "index.html";
+            window.location.href = "/delivery_calculator/index.html"; // Возвращаемся на главную страницу
         }
-
         // Декодируем JSON-строку
         const results = JSON.parse(decodeURIComponent(resultsParam));
-
         // Заполняем основную информацию
         document.getElementById("weight").textContent = results.generalInformation.weight.toFixed(2);
         document.getElementById("volume").textContent = results.generalInformation.volume;
