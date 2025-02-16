@@ -76,18 +76,16 @@
         <div id="packaging-section"></div>
     </div>
 
-     <script>
+      <script>
         try {
-            // Получаем данные из URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const resultsParam = urlParams.get('results');
-    
+            // Извлекаем данные из localStorage
+            const resultsParam = localStorage.getItem("calculationResults");
             if (!resultsParam) {
                 throw new Error("Данные не найдены!");
             }
     
-            // Декодируем JSON-строку
-            const results = JSON.parse(decodeURIComponent(resultsParam));
+            // Парсим JSON
+            const results = JSON.parse(resultsParam);
     
             if (!results || !results.generalInformation) {
                 throw new Error("Некорректные данные");
@@ -170,6 +168,8 @@
         } catch (error) {
             alert("Ошибка при обработке данных: " + error.message);
             console.error("Ошибка:", error);
+            // Возвращаемся на главную страницу, если данные повреждены
+            window.location.href = "/delivery_calculator/index.html";
         }
     </script>
 </body>
