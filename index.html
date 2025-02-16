@@ -147,7 +147,7 @@
                         // Кодируем результаты в URL-safe формат и переходим на страницу с результатами
                         const encodedResults = encodeURIComponent(JSON.stringify(data));
                         // Используем правильный путь для GitHub Pages
-                        window.location.href = "/delivery_calculator/result.html?results=" + encodedResults;
+                        window.location.href = "result.html?results=" + encodedResults;
                     }
                 })
                 .catch(error => {
