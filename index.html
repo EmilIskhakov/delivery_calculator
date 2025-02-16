@@ -127,7 +127,6 @@
     <script>
         document.getElementById("deliveryForm").addEventListener("submit", function (event) {
             event.preventDefault();
-
             // Получаем данные с параметрами
             const category = document.getElementById("category").value;
             const weight = parseFloat(document.getElementById("weight").value);
@@ -136,10 +135,8 @@
             const height = parseFloat(document.getElementById("height").value);
             const cost = parseFloat(document.getElementById("cost").value);
             const quantity = parseInt(document.getElementById("quantity").value);
-
             // Строим URL для запроса
             const url = `https://script.google.com/macros/s/AKfycbwE_wPVN6HPLno4sMGTFxq3nMoMDKoTZ_7e7sZplK0_6lur-NSaDH8iExrgpv4QxcZoIw/exec?category=${encodeURIComponent(category)}&weight=${weight}&length=${length}&width=${width}&height=${height}&cost=${cost}&quantity=${quantity}`;
-
             // Делаем запрос
             fetch(url)
                 .then(response => response.json())
@@ -149,7 +146,8 @@
                     } else {
                         // Кодируем результаты в URL-safe формат и переходим на страницу с результатами
                         const encodedResults = encodeURIComponent(JSON.stringify(data));
-                        window.location.href = "result.html?results=" + encodedResults;
+                        // Используем правильный путь для GitHub Pages
+                        window.location.href = "/delivery_calculator/result.html?results=" + encodedResults;
                     }
                 })
                 .catch(error => {
