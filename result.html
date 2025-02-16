@@ -76,39 +76,41 @@
         <div id="packaging-section"></div>
     </div>
 
-    <script>
+     <script>
         try {
-            // Извлекаем данные из localStorage
-            const resultsParam = localStorage.getItem("calculationResults");
+            // Получаем данные из URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const resultsParam = urlParams.get('results');
+    
             if (!resultsParam) {
                 throw new Error("Данные не найдены!");
             }
-
-            // Парсим JSON
-            const results = JSON.parse(resultsParam);
-
+    
+            // Декодируем JSON-строку
+            const results = JSON.parse(decodeURIComponent(resultsParam));
+    
             if (!results || !results.generalInformation) {
                 throw new Error("Некорректные данные");
             }
-
+    
             // Заполняем основную информацию
             document.getElementById("weight").textContent = results.generalInformation.weight.toFixed(2);
             document.getElementById("volume").textContent = results.generalInformation.volume;
             document.getElementById("density").textContent = results.generalInformation.density;
             document.getElementById("cost").textContent = results.generalInformation.productCost;
             document.getElementById("quantity").textContent = results.generalInformation.boxCount;
-
+    
             // Функция для создания таблицы упаковки
             function createPackagingTable(packagingType, data) {
                 const section = document.createElement("div");
                 section.classList.add("packaging");
-
+    
                 const title = document.createElement("h2");
                 title.textContent = packagingType;
                 section.appendChild(title);
-
+    
                 const table = document.createElement("table");
-
+    
                 // Заголовки таблицы
                 const headerRow = table.insertRow();
                 const headers = ["Показатель", "Обычная доставка", "Быстрая доставка"];
@@ -117,7 +119,7 @@
                     th.textContent = headerText;
                     headerRow.appendChild(th);
                 });
-
+    
                 // Строки данных
                 const rows = [
                     { label: "Вес с упаковкой", value1: parseFloat(data.packedWeight), value2: parseFloat(data.packedWeight) },
@@ -126,7 +128,7 @@
                     { label: "Стоимость разгрузочных работ", value1: data.unloadCost, value2: data.unloadCost },
                     { label: "Стоимость страховки", value1: data.insurance, value2: data.insurance }
                 ];
-
+    
                 rows.forEach(rowData => {
                     const row = table.insertRow();
                     const cells = [rowData.label, rowData.value1, rowData.value2];
@@ -136,7 +138,7 @@
                         row.appendChild(cell);
                     });
                 });
-
+    
                 // Итоговая строка
                 const footerRow = table.createTFOOT().insertRow();
                 const footerCells = ["Итого сумма всех стоимостей выше", parseFloat(data.totalRegular), parseFloat(data.totalFast)];
@@ -145,11 +147,11 @@
                     cell.textContent = typeof cellText === "number" ? cellText.toFixed(2) : cellText;
                     footerRow.appendChild(cell);
                 });
-
+    
                 section.appendChild(table);
                 return section;
             }
-
+    
             // Генерация блоков для каждого типа упаковки
             const packagingSection = document.getElementById("packaging-section");
             const packagingTypes = {
@@ -157,7 +159,7 @@
                 corners: "Картонные уголки",
                 frame: "Деревянный каркас"
             };
-
+    
             for (const [key, title] of Object.entries(packagingTypes)) {
                 const packagingData = results[key];
                 if (packagingData) {
@@ -167,8 +169,7 @@
             }
         } catch (error) {
             alert("Ошибка при обработке данных: " + error.message);
-            console.error(error);
-            window.location.href = "/delivery_calculator/index.html"; // Возвращаемся на главную страницу
+            console.error("Ошибка:", error);
         }
     </script>
 </body>
