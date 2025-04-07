@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -138,9 +138,9 @@
             const quantity = parseInt(document.getElementById("quantity").value);
     
             // Строим URL для запроса
-            const url = `https://script.google.com/macros/s/AKfycbxoAhPy3dZp6WqRXZGlDsHkdmSf01-D8GyfMg6tK9c6YfsgC809H8_CiShfmcpQ8NFTcA/exec?category=${encodeURIComponent(category)}&weight=${weight}&length=${length}&width=${width}&height=${height}&cost=${cost}&quantity=${quantity}`;
+            const url = `/calculate?category=${encodeURIComponent(category)}&weight=${weight}&length=${length}&width=${width}&height=${height}&cost=${cost}&quantity=${quantity}`;
     
-            // Делаем запрос к Google Apps Script
+            // Делаем запрос к Flask API
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
@@ -153,7 +153,7 @@
                             // Сохраняем данные в localStorage
                             localStorage.setItem("calculationResults", JSON.stringify(data));
                             // Переходим на страницу с результатами
-                            window.location.href = "/delivery_calculator/result.html";
+                            window.location.href = "/result.html";
                         } catch (error) {
                             alert("Ошибка при обработке данных: " + error.message);
                             console.error("Поврежденный JSON:", data);
