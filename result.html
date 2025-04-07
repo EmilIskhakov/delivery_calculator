@@ -3,213 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Результаты расчета доставки</title>
+    <title>Форма для расчета доставки</title>
     <style>
+        /* Общие настройки */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
             background-color: #f9f9f9;
             color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
         h1 {
             color: #E74C3C;
             text-align: center;
             margin-bottom: 20px;
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 20px;
+        .logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 150px;
+            height: auto;
+        }
+        form {
+            background-color: #ffffff;
             border-radius: 8px;
+            padding: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .summary {
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-        }
-        .summary p {
-            margin: 5px 0;
-            font-size: 16px;
-        }
-        .packaging {
-            margin-bottom: 20px;
-        }
-        .packaging h2 {
-            color: #AA4444;
-            margin-bottom: 10px;
-        }
-        table {
+            margin: 0 auto 20px auto;
+            max-width: 400px;
             width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 10px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        tr.footer-row td {
-            font-weight: bold;
-        }
-        .button-container {
+            flex-grow: 1;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            margin-top: 20px;
         }
-        button {
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: #AA4444;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
             background-color: #E74C3C;
             color: white;
             border: none;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 15px;
+            font-size: 18px;
             border-radius: 4px;
             cursor: pointer;
-            width: 48%;
+            width: 100%;
+            margin-top: auto;
         }
-        button:hover {
+        input[type="submit"]:hover {
             background-color: #C0392B;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /* Адаптивность */
+        @media (max-width: 600px) {
+            form {
+                padding: 15px;
+            }
+            input, select {
+                padding: 10px;
+                font-size: 14px;
+            }
+            input[type="submit"] {
+                padding: 12px;
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Результаты расчета стоимости доставки</h1>
-    <div class="container">
-        <!-- Верхний блок с основной информацией -->
-        <div class="summary">
-            <h2>Основная информация:</h2>
-            <p><strong>Вес товара:</strong> <span id="weight"></span> кг</p>
-            <p><strong>Объем:</strong> <span id="volume"></span> м³</p>
-            <p><strong>Плотность:</strong> <span id="density"></span> кг/м³</p>
-            <p><strong>Стоимость товара:</strong> <span id="cost"></span> $</p>
-            <p><strong>Количество упаковок:</strong> <span id="quantity"></span></p>
-        </div>
-
-        <!-- Блоки с упаковками -->
-        <div id="packaging-section"></div>
-
-        <!-- Кнопки -->
-        <div class="button-container">
-            <button id="backButton">Вернуться назад</button>
-            <button id="saveButton">Сохранить расчет</button>
-        </div>
-    </div>
-
+    <!-- Логотип -->
+    <img src="https://raw.githubusercontent.com/EmilIskhakov/china-together-logo/main/photo_2024-05-27_15-00-14%20(2).jpg" alt="China Together" class="logo">
+    <h1>Расчет стоимости доставки</h1>
+    <form id="deliveryForm" style="flex-grow: 1;">
+        <!-- Категория товара -->
+        <label for="category">Категория товара:</label>
+        <select id="category" name="category" tabindex="1">
+            <option value="Обычные товары">Обычные товары</option>
+            <option value="Текстиль">Текстиль</option>
+            <option value="Одежда">Одежда</option>
+            <option value="Обувь">Обувь</option>
+            <option value="Нижнее белье">Нижнее белье</option>
+        </select>
+        <!-- Вес одной коробки -->
+        <label for="weight">Вес одной коробки (кг):</label>
+        <input type="number" id="weight" name="weight" required min="0.1" step="any" tabindex="2" placeholder="Введите вес">
+        <!-- Размеры коробки -->
+        <label for="length">Длина коробки (см):</label>
+        <input type="number" id="length" name="length" required min="1" step="any" tabindex="3" placeholder="Введите длину">
+        <label for="width">Ширина коробки (см):</label>
+        <input type="number" id="width" name="width" required min="1" step="any" tabindex="4" placeholder="Введите ширину">
+        <label for="height">Высота коробки (см):</label>
+        <input type="number" id="height" name="height" required min="1" step="any" tabindex="5" placeholder="Введите высоту">
+        <!-- Стоимость товара -->
+        <label for="cost">Стоимость товара ($):</label>
+        <input type="number" id="cost" name="cost" required min="0.01" step="any" tabindex="6" placeholder="Введите стоимость">
+        <!-- Количество коробок -->
+        <label for="quantity">Количество коробок:</label>
+        <input type="number" id="quantity" name="quantity" required min="1" step="1" tabindex="7" placeholder="Введите количество">
+        <!-- Кнопка отправки формы -->
+        <input type="submit" value="Рассчитать стоимость" tabindex="8">
+    </form>
     <script>
-        try {
-            // Извлекаем данные из localStorage
-            const resultsParam = localStorage.getItem("calculationResults");
-            if (!resultsParam) {
-                throw new Error("Данные не найдены!");
-            }
-
-            // Парсим JSON
-            const results = JSON.parse(resultsParam);
-
-            if (!results || !results.generalInformation) {
-                throw new Error("Некорректные данные");
-            }
-
-            // Заполняем основную информацию
-            document.getElementById("weight").textContent = results.generalInformation.weight.toFixed(2);
-            document.getElementById("volume").textContent = results.generalInformation.volume;
-            document.getElementById("density").textContent = results.generalInformation.density;
-            document.getElementById("cost").textContent = results.generalInformation.productCost;
-            document.getElementById("quantity").textContent = results.generalInformation.boxCount;
-
-            // Функция для создания таблицы упаковки
-            function createPackagingTable(packagingType, data) {
-                const section = document.createElement("div");
-                section.classList.add("packaging");
-
-                const title = document.createElement("h2");
-                title.textContent = packagingType;
-                section.appendChild(title);
-
-                const table = document.createElement("table");
-
-                // Заголовки таблицы
-                const headerRow = table.insertRow();
-                const headers = ["Показатель", "Обычная доставка", "Быстрая доставка"];
-                headers.forEach(headerText => {
-                    const th = document.createElement("th");
-                    th.textContent = headerText;
-                    headerRow.appendChild(th);
+        document.getElementById("deliveryForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+    
+            // Получаем данные с параметрами
+            const category = document.getElementById("category").value;
+            const weight = parseFloat(document.getElementById("weight").value);
+            const length = parseFloat(document.getElementById("length").value);
+            const width = parseFloat(document.getElementById("width").value);
+            const height = parseFloat(document.getElementById("height").value);
+            const cost = parseFloat(document.getElementById("cost").value);
+            const quantity = parseInt(document.getElementById("quantity").value);
+    
+            // Строим URL для запроса
+            const url = `/calculate?category=${encodeURIComponent(category)}&weight=${weight}&length=${length}&width=${width}&height=${height}&cost=${cost}&quantity=${quantity}`;
+    
+            // Делаем запрос к Flask API
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        try {
+                            // Проверяем корректность JSON
+                            JSON.parse(JSON.stringify(data));
+                            // Сохраняем данные в localStorage
+                            localStorage.setItem("calculationResults", JSON.stringify(data));
+                            // Переходим на страницу с результатами
+                            window.location.href = "/result.html";
+                        } catch (error) {
+                            alert("Ошибка при обработке данных: " + error.message);
+                            console.error("Поврежденный JSON:", data);
+                        }
+                    }
+                })
+                .catch(error => {
+                    alert("Ошибка при выполнении запроса: " + error.message);
                 });
-
-                // Строки данных
-                const rows = [
-                    { label: "Вес с упаковкой", value1: parseFloat(data.packedWeight), value2: parseFloat(data.packedWeight) },
-                    { label: "Стоимость упаковки", value1: data.packagingCost, value2: data.packagingCost },
-                    { label: "Стоимость доставки", value1: parseFloat(data.deliveryCostRegular), value2: parseFloat(data.deliveryCostFast) },
-                    { label: "Стоимость разгрузочных работ", value1: data.unloadCost, value2: data.unloadCost },
-                    { label: "Стоимость страховки", value1: data.insurance, value2: data.insurance }
-                ];
-
-                rows.forEach(rowData => {
-                    const row = table.insertRow();
-                    const cells = [rowData.label, rowData.value1, rowData.value2];
-                    cells.forEach(cellText => {
-                        const cell = document.createElement("td");
-                        cell.textContent = typeof cellText === "number" ? cellText.toFixed(2) : cellText;
-                        row.appendChild(cell);
-                    });
-                });
-
-                // Итоговая строка (добавляем как обычную строку)
-                const footerRow = table.insertRow();
-                footerRow.classList.add("footer-row");
-                const footerCells = ["Итого сумма всех стоимостей выше", parseFloat(data.totalRegular), parseFloat(data.totalFast)];
-                footerCells.forEach(cellText => {
-                    const cell = document.createElement("td");
-                    cell.textContent = typeof cellText === "number" ? cellText.toFixed(2) : cellText;
-                    cell.style.fontWeight = "bold";
-                    footerRow.appendChild(cell);
-                });
-
-                section.appendChild(table);
-                return section;
-            }
-
-            // Генерация блоков для каждого типа упаковки
-            const packagingSection = document.getElementById("packaging-section");
-            const packagingTypes = {
-                bag: "Мешок",
-                corners: "Картонные уголки",
-                frame: "Деревянный каркас"
-            };
-
-            for (const [key, title] of Object.entries(packagingTypes)) {
-                const packagingData = results[key];
-                if (packagingData) {
-                    const table = createPackagingTable(title, packagingData);
-                    packagingSection.appendChild(table);
-                }
-            }
-
-            // Кнопка "Вернуться назад"
-            document.getElementById("backButton").addEventListener("click", function () {
-                window.location.href = "/delivery_calculator/index.html";
-            });
-
-            // Кнопка "Сохранить расчет"
-            document.getElementById("saveButton").addEventListener("click", function () {
-                // Сохраняем результаты в localStorage с уникальным ключом
-                const savedCalculations = JSON.parse(localStorage.getItem("savedCalculations")) || [];
-                savedCalculations.push(results); // Добавляем текущий расчет
-                localStorage.setItem("savedCalculations", JSON.stringify(savedCalculations));
-                alert("Расчет успешно сохранен!");
-            });
-        } catch (error) {
-            alert("Ошибка при обработке данных: " + error.message);
-            console.error("Ошибка:", error);
-            window.location.href = "/delivery_calculator/index.html"; // Возвращаемся на главную страницу
-        }
+        });
     </script>
 </body>
 </html>
