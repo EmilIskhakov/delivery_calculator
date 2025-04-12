@@ -108,18 +108,23 @@
                 throw new Error("Данные не найдены!");
             }
 
-            // Парсим JSON
-            const results = JSON.parse(resultsParam);
+            // Парсим JSON с обработкой ошибок
+            let results;
+            try {
+                results = JSON.parse(resultsParam);
+            } catch (parseError) {
+                throw new Error("Некорректные данные в localStorage.");
+            }
 
             if (!results || !results.generalInformation) {
-                throw new Error("Некорректные данные");
+                throw new Error("Некорректные данные.");
             }
 
             // Заполняем основную информацию
-            document.getElementById("weight").textContent = results.generalInformation.weight.toFixed(2);
-            document.getElementById("volume").textContent = results.generalInformation.volume;
-            document.getElementById("density").textContent = results.generalInformation.density;
-            document.getElementById("cost").textContent = results.generalInformation.productCost;
+            document.getElementById("weight").textContent = parseFloat(results.generalInformation.weight).toFixed(2);
+            document.getElementById("volume").textContent = parseFloat(results.generalInformation.volume).toFixed(2);
+            document.getElementById("density").textContent = parseFloat(results.generalInformation.density).toFixed(2);
+            document.getElementById("cost").textContent = parseFloat(results.generalInformation.productCost).toLocaleString('en-US', { minimumFractionDigits: 2 });
             document.getElementById("quantity").textContent = results.generalInformation.boxCount;
 
             // Функция для создания таблицы упаковки
@@ -145,10 +150,10 @@
                 // Строки данных
                 const rows = [
                     { label: "Вес с упаковкой", value1: parseFloat(data.packedWeight), value2: parseFloat(data.packedWeight) },
-                    { label: "Стоимость упаковки", value1: data.packagingCost, value2: data.packagingCost },
+                    { label: "Стоимость упаковки", value1: parseFloat(data.packagingCost), value2: parseFloat(data.packagingCost) },
                     { label: "Стоимость доставки", value1: parseFloat(data.deliveryCostRegular), value2: parseFloat(data.deliveryCostFast) },
-                    { label: "Стоимость разгрузочных работ", value1: data.unloadCost, value2: data.unloadCost },
-                    { label: "Стоимость страховки", value1: data.insurance, value2: data.insurance }
+                    { label: "Стоимость разгрузочных работ", value1: parseFloat(data.unloadCost), value2: parseFloat(data.unloadCost) },
+                    { label: "Стоимость страховки", value1: parseFloat(data.insurance), value2: parseFloat(data.insurance) }
                 ];
 
                 rows.forEach(rowData => {
@@ -156,18 +161,18 @@
                     const cells = [rowData.label, rowData.value1, rowData.value2];
                     cells.forEach(cellText => {
                         const cell = document.createElement("td");
-                        cell.textContent = typeof cellText === "number" ? cellText.toFixed(2) : cellText;
+                        cell.textContent = typeof cellText === "number" ? cellText.toLocaleString('en-US', { minimumFractionDigits: 2 }) : cellText;
                         row.appendChild(cell);
                     });
                 });
 
-                // Итоговая строка (добавляем как обычную строку)
+                // Итоговая строка
                 const footerRow = table.insertRow();
                 footerRow.classList.add("footer-row");
                 const footerCells = ["Итого сумма всех стоимостей выше", parseFloat(data.totalRegular), parseFloat(data.totalFast)];
                 footerCells.forEach(cellText => {
                     const cell = document.createElement("td");
-                    cell.textContent = typeof cellText === "number" ? cellText.toFixed(2) : cellText;
+                    cell.textContent = typeof cellText === "number" ? cellText.toLocaleString('en-US', { minimumFractionDigits: 2 }) : cellText;
                     cell.style.fontWeight = "bold";
                     footerRow.appendChild(cell);
                 });
@@ -194,7 +199,7 @@
 
             // Кнопка "Вернуться назад"
             document.getElementById("backButton").addEventListener("click", function () {
-                window.location.href = "/index.html";
+                window.location.href = "/"; // Перенаправляем на главную страницу
             });
 
             // Кнопка "Сохранить расчет"
@@ -203,12 +208,12 @@
                 const savedCalculations = JSON.parse(localStorage.getItem("savedCalculations")) || [];
                 savedCalculations.push(results); // Добавляем текущий расчет
                 localStorage.setItem("savedCalculations", JSON.stringify(savedCalculations));
-                alert("Расчет успешно сохранен!");
+                alert("Расчет успешно сохранен! Вы можете просмотреть сохраненные расчеты позже.");
             });
         } catch (error) {
             alert("Ошибка при обработке данных: " + error.message);
             console.error("Ошибка:", error);
-            window.location.href = "/index.html"; // Возвращаемся на главную страницу
+            window.location.href = "/"; // Возвращаемся на главную страницу
         }
     </script>
 </body>
