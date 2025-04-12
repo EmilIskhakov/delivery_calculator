@@ -125,45 +125,56 @@
         <input type="submit" value="Рассчитать стоимость" tabindex="8">
     </form>
     <script>
-        document.getElementById("deliveryForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-    
-            // Получаем данные с параметрами
-            const category = document.getElementById("category").value;
-            const weight = parseFloat(document.getElementById("weight").value);
-            const length = parseFloat(document.getElementById("length").value);
-            const width = parseFloat(document.getElementById("width").value);
-            const height = parseFloat(document.getElementById("height").value);
-            const cost = parseFloat(document.getElementById("cost").value);
-            const quantity = parseInt(document.getElementById("quantity").value);
-    
-            // Строим URL для запроса
-            const url = `/calculate?category=${encodeURIComponent(category)}&weight=${weight}&length=${length}&width=${width}&height=${height}&cost=${cost}&quantity=${quantity}`;
-    
-            // Делаем запрос к Flask API
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert(data.error);
-                    } else {
-                        try {
-                            // Проверяем корректность JSON
-                            JSON.parse(JSON.stringify(data));
-                            // Сохраняем данные в localStorage
-                            localStorage.setItem("calculationResults", JSON.stringify(data));
-                            // Переходим на страницу с результатами
-                            window.location.href = "/result.html";
-                        } catch (error) {
-                            alert("Ошибка при обработке данных: " + error.message);
-                            console.error("Поврежденный JSON:", data);
+        // Инициализация Telegram WebApp
+        const tg = window.Telegram.WebApp;
+
+        // Получение данных пользователя Telegram
+        const user = tg.initDataUnsafe?.user;
+        if (user) {
+            const telegramId = user.id;
+            const username = user.username || "unknown";
+
+            // Отправка данных в форму
+            document.getElementById("deliveryForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                // Получаем данные с параметрами
+                const category = document.getElementById("category").value;
+                const weight = parseFloat(document.getElementById("weight").value);
+                const length = parseFloat(document.getElementById("length").value);
+                const width = parseFloat(document.getElementById("width").value);
+                const height = parseFloat(document.getElementById("height").value);
+                const cost = parseFloat(document.getElementById("cost").value);
+                const quantity = parseInt(document.getElementById("quantity").value);
+
+                // Строим URL для запроса
+                const url = `/calculate?category=${encodeURIComponent(category)}&weight=${weight}&length=${length}&width=${width}&height=${height}&cost=${cost}&quantity=${quantity}&telegram_id=${telegramId}&username=${username}`;
+
+                // Делаем запрос к Flask API
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert(data.error);
+                        } else {
+                            try {
+                                // Сохраняем данные в localStorage
+                                localStorage.setItem("calculationResults", JSON.stringify(data));
+                                // Переходим на страницу с результатами
+                                window.location.href = "/result.html";
+                            } catch (error) {
+                                alert("Ошибка при обработке данных: " + error.message);
+                                console.error("Поврежденный JSON:", data);
+                            }
                         }
-                    }
-                })
-                .catch(error => {
-                    alert("Ошибка при выполнении запроса: " + error.message);
-                });
-        });
+                    })
+                    .catch(error => {
+                        alert("Ошибка при выполнении запроса: " + error.message);
+                    });
+            });
+        } else {
+            alert("Не удалось получить данные пользователя Telegram.");
+        }
     </script>
 </body>
 </html>
