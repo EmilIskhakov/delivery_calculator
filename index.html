@@ -148,7 +148,7 @@
                 const quantity = parseInt(document.getElementById("quantity").value);
 
                 // Строим URL для запроса
-                const url = `/calculate?category=${encodeURIComponent(category)}&weight=${weight}&length=${length}&width=${width}&height=${height}&cost=${cost}&quantity=${quantity}&telegram_id=${telegramId}&username=${username}`;
+                const url = `http://84.201.187.187:8061/calculate?category=${encodeURIComponent(category)}&weight=${weight}&length=${length}&width=${width}&height=${height}&cost=${cost}&quantity=${quantity}&telegram_id=${telegramId}&username=${username}`;
 
                 // Делаем запрос к Flask API
                 fetch(url)
